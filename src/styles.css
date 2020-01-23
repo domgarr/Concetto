@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+
+body {
+    padding-top: 56px;
+  }
+
+  .lh-100 { line-height: 1; }
+
+.bg-green {background-color: green;}
