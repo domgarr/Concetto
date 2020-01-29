@@ -4,6 +4,9 @@ target/
 !**/src/main/**
 !**/src/test/**
 
+### Temp
+*.yaml
+
 ### STS ###
 .apt_generated
 .classpath
@@ -33,14 +36,14 @@ build/
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
-/tmp
-/out-tsc
+client/dist
+client/tmp
+client/out-tsc
 # Only exists if Bazel was run
-/bazel-out
+client/bazel-out
 
 # dependencies
-/node_modules
+client/node_modules
 
 # profiling files
 chrome-profiler-events*.json
@@ -64,14 +67,14 @@ speed-measure-plugin*.json
 .history/*
 
 # misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
+client/.sass-cache
+client/connect.lock
+client/coverage
+client/libpeerconnection.log
+client/npm-debug.log
+client/yarn-error.log
+client/testem.log
+client/typings
 
 # System Files
 .DS_Store
