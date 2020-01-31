@@ -2,11 +2,13 @@ package com.example.concetto;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.Filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
@@ -30,12 +32,20 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CompositeFilter;
 
 @SpringBootApplication
 @EnableOAuth2Client
 @RestController
 public class ConcettoApplication extends WebSecurityConfigurerAdapter {	
+	@Autowired 
+	OAuth2ClientContext oAuth2ClientContext;
+	@Value("${user-defined.allowed-origin}")
+	private String allowedOrgin;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(ConcettoApplication.class, args);
 	}
@@ -45,12 +55,12 @@ public class ConcettoApplication extends WebSecurityConfigurerAdapter {
 		return principal;
 	}
 	
-	@Autowired 
-	OAuth2ClientContext oAuth2ClientContext;
+
+	
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.antMatcher("/**")
+		http.cors().and().csrf().disable().antMatcher("/**")
 	    .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
 		.authorizeRequests()
 		.antMatchers("/", "/login/**", "/error/**", "/webjars/**")
@@ -58,9 +68,21 @@ public class ConcettoApplication extends WebSecurityConfigurerAdapter {
 		.anyRequest()
 		.authenticated()
 		.and()
-		.logout().logoutSuccessUrl("/").permitAll()
-	    .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+		.logout().logoutSuccessUrl("/").permitAll();
 
+	}
+	
+	
+	
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList(allowedOrgin));
+		configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTION", "DELETE", "PUT"));
+		configuration.setAllowedHeaders(Arrays.asList("*"));
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 	
 	//Supports redirect from our app to Facebook, Google.

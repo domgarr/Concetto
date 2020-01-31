@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { Router }      from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +9,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+ message :string;
+
+  constructor(public authService : AuthService, private router: Router) { }
+
 
   ngOnInit() {
+    
+  }
+
+  auth(){
+    this.authService.isLoggedIn().subscribe((value)=>{console.log(value)});
+  }
+
+  login(){
+    this.authService.login().subscribe(()=>{
+      this.message = "trying to log in";
+      if(this.authService.isLoggedIn){  
+        let redirect = this.authService.redirectUrl ? this.router.parseUrl(this.authService.redirectUrl) : '/u';
+        this.router.navigateByUrl(redirect);
+      }
+    });
+  }
+
+  logout(){
+    this.authService.logout();
   }
 
 }
