@@ -1,12 +1,17 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './header/header.component';
+import {RouterTestingModule} from '@angular/router/testing';
+import { FooterComponent } from './footer/footer.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent, HeaderComponent, FooterComponent
       ],
+      imports:[RouterTestingModule, HttpClientTestingModule]
     }).compileComponents();
   }));
 
@@ -22,10 +27,5 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('concetto');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('concetto app is running!');
-  });
+ 
 });

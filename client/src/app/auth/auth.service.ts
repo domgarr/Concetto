@@ -9,12 +9,12 @@ export class AuthService {
   loggedIn = false;
   redirectUrl : string;
 
-  private userUrl : string = "/api/user";
-  private facebookLoginUrl : string = "/api/login/facebook";
-  private googleLoginUrl : string = "/api/login/google";
+  private userUrl : string = "/proxy/user";
+  private facebookLoginUrl : string = "/login/facebook";
+  private googleLoginUrl : string = "/login/google";
 
   constructor(private http : HttpClient) { }
- 
+
   isLoggedIn() : Observable<any> {
     return this.http.post(this.userUrl,{});
   }

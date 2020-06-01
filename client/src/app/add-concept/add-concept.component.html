@@ -1,32 +1,34 @@
-<div class="container vh-80">
-    <input class="form-control form-control-lg my-3" type="text" placeholder="name of concept">
+<form #conceptForm="ngForm">
+  <div class="container vh-80">
+      <input [(ngModel)]="concept.name" id="name" class="form-control form-control-lg my-3" type="text" placeholder="name of concept" name="name" (keyup.enter) = "onNameEntered()">
 
-    <div class="form-group">
-        <label for="exampleFormControlTextarea1">explanation</label>
-        <textarea class="form-control vh-50" id="exampleFormControlTextarea1" rows="3"></textarea>
-    </div>
+      <div class="form-group">
+          <label for="exampleFormControlTextarea1">explanation</label>
+          <textarea class="form-control vh-50" id="exampleFormControlTextarea1" rows="3"></textarea>
+      </div>
 
-    <div class="form-group">
-        <label for="exampleFormControlFile1">upload an image</label>
-        <input type="file" class="form-control-file" id="exampleFormControlFile1">
-    </div>
+      <div class="form-group">
+          <label for="exampleFormControlFile1">upload an image</label>
+          <input type="file" class="form-control-file" id="exampleFormControlFile1">
+      </div>
 
-    <div class="mt-3">
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-            <label class="form-check-label" for="defaultCheck1">
-              I reviewed what I didn't know
-            </label>
-          </div>
+      <div class="mt-3">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" >
-            <label class="form-check-label" for="defaultCheck2">
-              I simplified the language used
-            </label>
-          </div>
-    </div>
-    <div class="d-flex justify-content-center mt-3">
-        <button type="button"  class="btn btn-lg btn-success mr-2">done</button>
-        <button type="button" class="btn btn-lg btn-primary ml-2">save</button>
-    </div>
-</div>
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <label class="form-check-label" for="defaultCheck1">
+                I reviewed what I didn't know
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" >
+              <label class="form-check-label" for="defaultCheck2">
+                I simplified the language used
+              </label>
+            </div>
+      </div>
+      <div class="d-flex justify-content-center mt-3">
+          <button type="button" (click)="onConceptDone()" class="btn btn-lg btn-success mr-2">done</button>
+          <button type="button"  class="btn btn-lg btn-primary ml-2">save</button>
+      </div>
+  </div>
+</form>
