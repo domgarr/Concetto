@@ -38,10 +38,11 @@ public class ConceptController {
     }
 
     @PutMapping
-    public ResponseEntity<Concept> saveConcept(@RequestBody Concept concept){
+    public ResponseEntity<Concept> saveConcept(@RequestBody Concept concept) {
         Set<ConstraintViolation<Concept>> constraintViolations = Validation.buildDefaultValidatorFactory().getValidator().validate(concept);
         if(constraintViolations.size() > 0){
             StringBuilder errorMessage = new StringBuilder();
+            boolean nameViolation = false; //Used when save query is set.
 
             Iterator<ConstraintViolation<Concept>> constraintIt =  constraintViolations.iterator();
             while(constraintIt.hasNext()){
@@ -49,11 +50,8 @@ public class ConceptController {
                 errorMessage.append(constraintViolation.getPropertyPath() + ": " + constraintViolation.getMessage() + ". ");
             }
             //The use of substring to to remove the space from the last error message that is appended.
-            throw new DataIntegrityError(errorMessage.substring(0,errorMessage.length()-2));
+            throw new DataIntegrityError(errorMessage.substring(0, errorMessage.length() - 2));
         }
-
         return new ResponseEntity<Concept>(conceptService.save(concept), HttpStatus.OK);
     }
-
-
 }

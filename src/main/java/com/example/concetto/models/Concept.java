@@ -7,7 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Data
 @Entity
@@ -19,16 +21,20 @@ public class Concept {
     private Long userId;
 
     @NotBlank
-    @Size(min = 1, max = 20)
+    @Size(max = 100)
     private String name;
 
+    @NotNull
     @Size(max = 255)
     private String explanation;
 
     private boolean reviewed;
     private boolean simplified;
+    private boolean done;
+    private Date dateCreated;
+    private Date dateLastReviewed;
 
     public Concept(){
-
+        dateCreated = new Date();
     }
 }

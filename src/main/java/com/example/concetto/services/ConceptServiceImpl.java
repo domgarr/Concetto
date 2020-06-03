@@ -53,6 +53,11 @@ public class ConceptServiceImpl implements ConceptService {
 
     @Override
     public Concept save(Concept concept) {
+
+        if(concept.isReviewed() == true && concept.isSimplified() == true){
+            concept.setDone(true);
+        }
+
         conceptRepository.save(concept);
         return concept;
     }

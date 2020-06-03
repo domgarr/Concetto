@@ -2,6 +2,8 @@ package com.example.concetto.api.v1.model;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /*
     DTO in this case seems like overkill, but it's a good practice to use incase in the future there is a use-case.
     For example, if i wanted create a response that combined a call from another API and the call from my database - only
@@ -17,4 +19,6 @@ public class ConceptDTO {
     private String explanation;
     private boolean reviewed;
     private boolean simplified;
+    private Date dateCreated;
+    private Date dateLastReviewed;
 }

@@ -105,9 +105,12 @@ public class ConceptControllerTest {
     }
 
     @Test
-    public void saveConcept_ConceptWithNameMaxConstraintViolation_ShouldThrowBadRequestError() throws Exception {
+    public void saveConcept_ConceptWithEmptyExplanation_ShouldThrowBadRequestError() throws Exception{
         Concept concept = new Concept();
-        concept.setName("Checkcheckcheckcheckcheck");
+        concept.setId(1L);
+        concept.setUserId(1L);
+        concept.setName("REST");
+        concept.setExplanation("");
 
         Gson gson = new Gson();
 
@@ -118,6 +121,26 @@ public class ConceptControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    public void saveConcept_ConceptWithExplanationMaxConstraintViolation_ShouldThrowBadRequestError() throws Exception {
+        Concept concept = new Concept();
+        concept.setName("Placeholder");
+        //length = 300
+        String explanation = "CheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheck" +
+                "CheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheck" +
+                "CheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheckCheck";
+        concept.setExplanation(explanation);
+        Gson gson = new Gson();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/api/v1/concepts")
+                .content(gson.toJson(concept))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
     @Test
     public void saveConcept_ConceptWithNameMinConstraintViolation_ShouldThrowBadRequestError() throws Exception {
         Concept concept = new Concept();
@@ -132,7 +155,19 @@ public class ConceptControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+    @Test
+    public void saveConcept_ConceptWithNameMaxConstraintViolation_ShouldThrowBadRequestError() throws Exception {
+        Concept concept = new Concept();
+        concept.setName("CheckcheckcheckcheckcheckCheckcheckcheckcheckcheckCheckcheckcheckcheckcheckCheckcheckcheckcheckcheckc");
 
+        Gson gson = new Gson();
 
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/api/v1/concepts")
+                .content(gson.toJson(concept))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
 
 }

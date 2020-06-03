@@ -52,5 +52,8 @@ public class ConceptTests {
         assertEquals("REST", concept.getName());
     }
 
-
+    @Test
+    void concept_emptyConstructor_shouldInitializeDateCreated(){
+        assertNotNull(concept.getDateCreated());
+    }
 }

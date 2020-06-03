@@ -10,8 +10,8 @@ export class AuthService {
   redirectUrl : string;
 
   private userUrl : string = "/proxy/user";
-  private facebookLoginUrl : string = "/login/facebook";
-  private googleLoginUrl : string = "/login/google";
+  private facebookLoginUrl : string = "/proxy/login/facebook";
+  private googleLoginUrl : string = "/proxy/login/google";
 
   constructor(private http : HttpClient) { }
 
