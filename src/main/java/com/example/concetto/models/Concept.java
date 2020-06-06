@@ -34,7 +34,7 @@ public class Concept {
     private Date dateCreated;
     private Date dateLastReviewed;
 
-    public Concept(){
+    public Concept() {
         dateCreated = new Date();
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Mapper
 public interface ConceptMapper {
-    ConceptMapper INSTANCE  = Mappers.getMapper(ConceptMapper.class);
+    ConceptMapper INSTANCE = Mappers.getMapper(ConceptMapper.class);
+
     ConceptDTO conceptToConceptDTO(Concept concept);
 }

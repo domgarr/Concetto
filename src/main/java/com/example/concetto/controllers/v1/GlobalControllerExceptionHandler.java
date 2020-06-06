@@ -16,7 +16,7 @@ public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DataIntegrityError.class)
-    public ResponseEntity<String> handleConceptConstraints(Set<ConstraintViolation<Concept>> constraintViolations){
+    public ResponseEntity<String> handleConceptConstraints(Set<ConstraintViolation<Concept>> constraintViolations) {
         return new ResponseEntity<String>("Error Message", HttpStatus.BAD_REQUEST);
     }
 }

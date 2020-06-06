@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ConceptMapperTest {
     public static final Long ID = 1L;
     public static final String NAME = "REST";
-    public static final String EXPLANATION ="REST stands for Representational State Transfer";
+    public static final String EXPLANATION = "REST stands for Representational State Transfer";
     private static final Long USER_ID = 1L;
     ConceptMapper conceptMapper = ConceptMapper.INSTANCE;
 
     @Test
-    public void conceptToConceptDTO(){
+    public void conceptToConceptDTO() {
         Concept concept = new Concept();
         concept.setId(ID);
         concept.setUserId(USER_ID);

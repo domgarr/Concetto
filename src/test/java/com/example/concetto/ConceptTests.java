@@ -53,7 +53,7 @@ public class ConceptTests {
     }
 
     @Test
-    void concept_emptyConstructor_shouldInitializeDateCreated(){
+    void concept_emptyConstructor_shouldInitializeDateCreated() {
         assertNotNull(concept.getDateCreated());
     }
 }

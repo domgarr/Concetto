@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
+import java.security.Principal;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -27,25 +28,25 @@ public class ConceptController {
 
     //TODO: Add error handling
     @GetMapping
-    public ResponseEntity<ConceptListDTO> getAllConcepts(){
+    public ResponseEntity<ConceptListDTO> getAllConcepts() {
         return new ResponseEntity<ConceptListDTO>(new ConceptListDTO(conceptService.getAllConcepts()), HttpStatus.OK);
     }
 
     //TODO: Add error handling
     @GetMapping("user/{id}")
-    public ResponseEntity<ConceptDTO> getConceptByUserId(@PathVariable Long id){
+    public ResponseEntity<ConceptDTO> getConceptByUserId(@PathVariable Long id) {
         return new ResponseEntity<ConceptDTO>(conceptService.findById(id), HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<Concept> saveConcept(@RequestBody Concept concept) {
         Set<ConstraintViolation<Concept>> constraintViolations = Validation.buildDefaultValidatorFactory().getValidator().validate(concept);
-        if(constraintViolations.size() > 0){
+        if (constraintViolations.size() > 0) {
             StringBuilder errorMessage = new StringBuilder();
             boolean nameViolation = false; //Used when save query is set.
 
-            Iterator<ConstraintViolation<Concept>> constraintIt =  constraintViolations.iterator();
-            while(constraintIt.hasNext()){
+            Iterator<ConstraintViolation<Concept>> constraintIt = constraintViolations.iterator();
+            while (constraintIt.hasNext()) {
                 ConstraintViolation constraintViolation = constraintIt.next();
                 errorMessage.append(constraintViolation.getPropertyPath() + ": " + constraintViolation.getMessage() + ". ");
             }

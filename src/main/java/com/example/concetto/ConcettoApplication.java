@@ -3,6 +3,7 @@ package com.example.concetto;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.Filter;
@@ -27,6 +28,7 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilt
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -50,10 +52,6 @@ public class ConcettoApplication extends WebSecurityConfigurerAdapter {
         SpringApplication.run(ConcettoApplication.class, args);
     }
 
-    @RequestMapping("/user")
-    public Principal user(Principal principal) {
-        return principal;
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

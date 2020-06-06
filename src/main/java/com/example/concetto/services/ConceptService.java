@@ -8,7 +8,10 @@ import java.util.List;
 
 public interface ConceptService {
     List<ConceptDTO> getAllConcepts();
+
     List<ConceptDTO> getAllConceptsByUserId(Long id);
+
     ConceptDTO findById(Long id);
+
     Concept save(Concept concept);
 }

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class ConceptRepositoryTest {
 
     ConceptService conceptService; //TODO: Use DI in the future?
@@ -24,14 +26,14 @@ public class ConceptRepositoryTest {
     ConceptRepository conceptRepository;
 
     @BeforeEach
-    void init(){
+    void init() {
         conceptService = new ConceptServiceImpl(ConceptMapper.INSTANCE, conceptRepository);
     }
 
 
     //TODO: The following should only be instantiated once.
     @Test
-    public void getAllConceptsByUserId_WithUserIdOne_CountIsOne(){
+    public void getAllConceptsByUserId_WithUserIdOne_CountIsOne() {
         Concept concept = new Concept();
         concept.setName("REST");
         concept.setExplanation("Blah");
