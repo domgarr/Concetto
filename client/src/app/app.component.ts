@@ -25,8 +25,11 @@ export class AppComponent {
     
     this.authService.isLoggedIn().subscribe(
     response => this.loginSuccess(),
-    error => this.loginFailure()
-  ).add(()=>{
+    error => {
+      this.loginFailure()
+      console.log(error);
+    }
+   ).add(()=>{
     if(this.authService.isLoggedIn){
       //this.authService.redirectUrl has a value if the user was unauthenticated when visting a secured URL.
       let redirect = this.authService.redirectUrl ? this.router.parseUrl(this.authService.redirectUrl) : redirectUrl;

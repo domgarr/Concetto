@@ -2,11 +2,14 @@ package com.example.concetto.services;
 
 import com.example.concetto.api.v1.mapper.UserMapper;
 import com.example.concetto.api.v1.model.UserDTO;
+import com.example.concetto.exception.NotFoundException;
 import com.example.concetto.models.User;
 import com.example.concetto.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.math.BigInteger;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,9 +22,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getByEmail(String email) {
-        return null;
+    public User getUserByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if(!user.isPresent()){
+            throw new NotFoundException(("User not found."));
+        }
+
+        return user.get();
     }
+
+    @Override
+    public UserDTO getUserDtoByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if(!user.isPresent()){
+            throw new NotFoundException("UserDTO not found.");
+        }
+
+        return user.map(userMapper::userToUserDTO).get();
+    }
+
+
 
     @Override
     public User save(User user) {
@@ -35,9 +57,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existsByEmail(String email) {
-        //Exists query returns a 1/0 as a BigInteger
-        return userRepository.existsByEmail(email);
-        //return exists.intValue() != 0; //Convert the BigInteger to a boolean
+        BigInteger exists = userRepository.existsByEmail(email);
+        return exists.intValue() != 0; //Convert the BigInteger to a boolean
     }
 
     /**

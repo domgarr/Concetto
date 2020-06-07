@@ -1,5 +1,6 @@
 package com.example.concetto.api.v1.model;
 
+import com.example.concetto.models.User;
 import lombok.Data;
 
 import java.util.Date;
@@ -14,7 +15,7 @@ import java.util.Date;
 @Data
 public class ConceptDTO {
     private Long id;
-    private Long userId;
+    private User user;
     private String name;
     private String explanation;
     private boolean reviewed;

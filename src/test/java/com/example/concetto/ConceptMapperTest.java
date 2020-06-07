@@ -3,6 +3,7 @@ package com.example.concetto;
 import com.example.concetto.api.v1.mapper.ConceptMapper;
 import com.example.concetto.api.v1.model.ConceptDTO;
 import com.example.concetto.models.Concept;
+import com.example.concetto.models.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +19,10 @@ public class ConceptMapperTest {
     public void conceptToConceptDTO() {
         Concept concept = new Concept();
         concept.setId(ID);
-        concept.setUserId(USER_ID);
+
+        concept.setUser(new User());
+        concept.getUser().setId(USER_ID);
+
         concept.setName(NAME);
         concept.setExplanation(EXPLANATION);
         concept.setReviewed(true);
@@ -27,7 +31,7 @@ public class ConceptMapperTest {
 
         ConceptDTO conceptDTO = conceptMapper.conceptToConceptDTO(concept);
         assertEquals(ID, conceptDTO.getId());
-        assertEquals(USER_ID, conceptDTO.getUserId());
+        assertEquals(USER_ID, conceptDTO.getUser().getId());
         assertEquals(NAME, conceptDTO.getName());
         assertEquals(EXPLANATION, conceptDTO.getExplanation());
         assertEquals(true, conceptDTO.isReviewed());

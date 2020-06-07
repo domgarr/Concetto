@@ -4,6 +4,7 @@ import com.example.concetto.api.v1.model.ConceptDTO;
 import com.example.concetto.controllers.v1.ConceptController;
 import com.example.concetto.exception.NotFoundException;
 import com.example.concetto.models.Concept;
+import com.example.concetto.models.User;
 import com.example.concetto.services.ConceptService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +48,10 @@ public class ConceptControllerTest {
     public void listConcepts() throws Exception {
         ConceptDTO concept1 = new ConceptDTO();
         concept1.setId(1L);
-        concept1.setUserId(1L);
+
+        concept1.setUser(new User());
+        concept1.getUser().setId(1L);
+
         concept1.setName("REST");
         concept1.setExplanation("REST stands for Representation State Transfer.");
         concept1.setReviewed(true);
@@ -89,7 +93,10 @@ public class ConceptControllerTest {
     public void saveConcept_ConceptWithEmptyDescription_ShouldThrowBadRequestError() throws Exception {
         Concept concept = new Concept();
         concept.setId(1L);
-        concept.setUserId(1L);
+
+        concept.setUser(new User());
+        concept.getUser().setId(1L);
+
         concept.setExplanation("Blah");
 
         Gson gson = new Gson();
@@ -106,7 +113,10 @@ public class ConceptControllerTest {
     public void saveConcept_ConceptWithEmptyExplanation_ShouldThrowBadRequestError() throws Exception {
         Concept concept = new Concept();
         concept.setId(1L);
-        concept.setUserId(1L);
+
+        concept.setUser(new User());
+        concept.getUser().setId(1L);
+
         concept.setName("REST");
         concept.setExplanation("");
 

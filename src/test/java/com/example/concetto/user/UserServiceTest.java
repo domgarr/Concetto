@@ -10,11 +10,17 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.math.BigInteger;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
-    public static final String PLACEHOLDER_GMAIL_COM = "placeholder@gmail.com";
+    private static final String PLACEHOLDER_GMAIL_COM = "placeholder@gmail.com";
+    private static BigInteger t = new BigInteger("1");
+    private static BigInteger f = new BigInteger("0");
+
+
     private UserService userService;
     @Mock
     private UserRepository userRepository;
@@ -39,28 +45,28 @@ public class UserServiceTest {
 
     @Test
     void existsByEmail_IfNoUserExists_FalseShouldBeReturned() {
-        when(userRepository.existsByEmail(PLACEHOLDER_GMAIL_COM)).thenReturn(false);
+        when(userRepository.existsByEmail(PLACEHOLDER_GMAIL_COM)).thenReturn(f);
         boolean doesUserExist = userService.existsByEmail(PLACEHOLDER_GMAIL_COM);
         assertFalse(doesUserExist);
     }
 
     @Test
     void existsByEmail_IfUserExists_TrueShouldBeReturned() {
-        when(userRepository.existsByEmail("placeholder@gmail.com")).thenReturn(true);
+        when(userRepository.existsByEmail("placeholder@gmail.com")).thenReturn(t);
         boolean doesUserExist = userService.existsByEmail(PLACEHOLDER_GMAIL_COM);
         assertTrue(doesUserExist);
     }
 
     @Test
     void createUserIfNotFound_IfUserIsFound_ReturnFalse() {
-        when(userRepository.existsByEmail(PLACEHOLDER_GMAIL_COM)).thenReturn(false);
+        when(userRepository.existsByEmail(PLACEHOLDER_GMAIL_COM)).thenReturn(f);
         boolean success = userService.existsByEmail(PLACEHOLDER_GMAIL_COM);
         assertFalse(success);
     }
 
     @Test
     void createUserIfNotFound_IfUserNotFound_ReturnTrue() {
-        when(userRepository.existsByEmail(PLACEHOLDER_GMAIL_COM)).thenReturn(true);
+        when(userRepository.existsByEmail(PLACEHOLDER_GMAIL_COM)).thenReturn(t);
         boolean success = userService.existsByEmail(PLACEHOLDER_GMAIL_COM);
         assertTrue(success);
     }

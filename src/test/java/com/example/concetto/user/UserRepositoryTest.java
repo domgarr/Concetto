@@ -8,10 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.transaction.Transactional;
+import java.math.BigInteger;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 public class UserRepositoryTest {
     public static final String ASD_GMAIL_COM = "asd@gmail.com";
     public static final String INVALID_GMAIL_COM = "invalid@gmail.com";
@@ -31,14 +35,14 @@ public class UserRepositoryTest {
         User savedUser = userRepository.save(user);
         assertNotNull(savedUser);
 
-        boolean userExists = userRepository.existsByEmail(ASD_GMAIL_COM);
-        assertTrue(userExists);
+        BigInteger userExists = userRepository.existsByEmail(ASD_GMAIL_COM);
+        assertTrue(userExists.intValue() != 0);
     }
 
     @Test
     void existsByEmail_GivenInvalidEmailStoredInDb_ReturnFalse() {
-        boolean userExists = userRepository.existsByEmail(INVALID_GMAIL_COM);
-        assertFalse(userExists);
+        BigInteger userExists = userRepository.existsByEmail(INVALID_GMAIL_COM);
+        assertFalse(userExists.intValue() != 0);
     }
 
 

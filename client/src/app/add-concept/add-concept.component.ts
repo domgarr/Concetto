@@ -16,9 +16,9 @@ export class AddConceptComponent implements OnInit {
 
   @ViewChild('conceptForm', {static: false}) conceptForm: any;
 
-  nameReqError : string = "Name is required."
-  nameMinError : string = "Name must be atleast one character long."; 
-  nameMaxError : string = "Name must not exceed 255 characters."; 
+  nameReqError : string = "name is required."
+  nameMinError : string = "name must be atleast one character long."; 
+  nameMaxError : string = "name must not exceed 255 characters."; 
 
   explanationMinError : string = "Explanation must be atleast one character long."; 
   explanationMaxError : string = "Explanation ame must not exceed 255 characters."; 

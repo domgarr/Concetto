@@ -36,7 +36,7 @@ public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent
 
         //
         if (conceptRepository.count() == 0) {
-            loadConcepts();
+            //loadConcepts();
             log.debug("Loading concepts.");
         }
     }

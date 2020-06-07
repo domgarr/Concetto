@@ -4,7 +4,8 @@ import com.example.concetto.api.v1.model.UserDTO;
 import com.example.concetto.models.User;
 
 public interface UserService {
-    UserDTO getByEmail(String email);
+    UserDTO getUserDtoByEmail(String email);
+    User getUserByEmail(String email);
 
     User save(User user);
 
