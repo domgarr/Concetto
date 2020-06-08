@@ -1,0 +1,16 @@
+<div class="container">
+<div *ngFor="let concept of concepts">
+    <div class="card my-5">
+        <div class="card-header">
+          Category
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{concept.name}}</h5>
+          <p class="card-text">{{concept.explanation}}</p>
+          <a href="#" class="btn btn-success">Reviewed</a>
+          <a href="#" class="btn btn-warning ml-3">Edit</a>
+        </div>
+      </div>
+</div>
+
+</div>

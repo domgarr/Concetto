@@ -46,9 +46,10 @@ public class ConceptController {
     }
 
     //TODO: Add error handling
-    @GetMapping
-    public ResponseEntity<ConceptListDTO> getAllConcepts() {
-        return new ResponseEntity<ConceptListDTO>(new ConceptListDTO(conceptService.getAllConcepts()), HttpStatus.OK);
+    @GetMapping("/all")
+    public ResponseEntity<ConceptListDTO> getAllConcepts(OAuth2Authentication authentication) {
+        User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));
+        return new ResponseEntity<ConceptListDTO>(new ConceptListDTO(conceptService.getAllConceptsByUserId(user.getId())), HttpStatus.OK);
     }
 
     //TODO: Add error handling

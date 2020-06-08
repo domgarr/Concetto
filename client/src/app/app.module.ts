@@ -12,10 +12,9 @@ import { LoginComponent } from './login/login.component';
 
 import { AppRoutingModule }        from './app-routing.module';
 
-import { from } from 'rxjs';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { UserComponent } from './user/user.component';
 import { UserModule } from './user/user.module';
+import { ViewConceptComponent } from './view-concept/view-concept.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +22,8 @@ import { UserModule } from './user/user.module';
     HeaderComponent,
     FooterComponent,
     LoginComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ViewConceptComponent
   ],
   imports: [
     BrowserModule,
