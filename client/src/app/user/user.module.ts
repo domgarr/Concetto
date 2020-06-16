@@ -6,14 +6,20 @@ import { UserComponent } from './user.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { AddConceptComponent } from '../add-concept/add-concept.component';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { AddSubjectComponent } from '../add-subject/add-subject.component';
+import { ViewSubjectComponent } from '../view-subject/view-subject.component';
+import { ViewConceptComponent } from '../view-concept/view-concept.component';
 
 
 @NgModule({
   declarations: [
     UserComponent,
     DashboardComponent,
-    AddConceptComponent
-  ],
+    AddConceptComponent,
+    AddSubjectComponent,
+    ViewSubjectComponent,
+    ViewConceptComponent
+    ],
   imports: [
     CommonModule,
     UserRoutingModule,

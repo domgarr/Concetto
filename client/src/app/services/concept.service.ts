@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Concept} from '../models/concept';
 import {Observable, of} from 'rxjs';
 
@@ -13,7 +13,9 @@ export class ConceptService {
   constructor(private http : HttpClient) { }
 
   addConcept(concept : Concept) : Observable<Concept> {
-    return this.http.put<Concept>(this.conceptUrl, concept, this.getHttpOptions() );
+    let httpOptions = this.getHttpOptions();
+    httpOptions.headers.set('observe', 'response');
+    return this.http.put<Concept>(this.conceptUrl, concept, this.getHttpOptions());
   }
 
   getConcepts() : Observable<Concept[]> {
@@ -24,8 +26,7 @@ export class ConceptService {
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
-      }),
-      observe: 'response' as 'body' 
+      })
     };
     return httpOptions;
   }

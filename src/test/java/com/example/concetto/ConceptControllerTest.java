@@ -49,9 +49,6 @@ public class ConceptControllerTest {
         ConceptDTO concept1 = new ConceptDTO();
         concept1.setId(1L);
 
-        concept1.setUser(new User());
-        concept1.getUser().setId(1L);
-
         concept1.setName("REST");
         concept1.setExplanation("REST stands for Representation State Transfer.");
         concept1.setReviewed(true);

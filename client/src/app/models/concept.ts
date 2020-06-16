@@ -2,7 +2,6 @@ import { typeWithParameters } from '@angular/compiler/src/render3/util';
 
 export class Concept {
     id : number;
-    userId : number;
     name : string;
     explanation : string;
     reviewed: boolean;
@@ -22,14 +21,6 @@ export class Concept {
 
     set Id(id : number) {
         this.id = id;
-    }
-
-    get UserId() : number {
-        return this.userId;
-    }
-
-    set UserId(userId : number) {
-        this.userId = userId;
     }
 
     get Name() : string {

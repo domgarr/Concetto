@@ -58,6 +58,15 @@ public class ConceptController {
         return new ResponseEntity<ConceptDTO>(conceptService.findById(id), HttpStatus.OK);
     }
 
+    @PostMapping("/reviewed")
+    public ResponseEntity<String> conceptReviewed(@PathVariable Long id){
+        //TODO: Ensure the user owns the Concept.
+
+        //TODO: Calculate next review date using Fibonacci sequence.
+
+        return null;
+    }
+
     @PutMapping
     public ResponseEntity<Concept> saveConcept(@RequestBody Concept concept, OAuth2Authentication authentication) {
         User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));

@@ -31,7 +31,6 @@ public class ConceptMapperTest {
 
         ConceptDTO conceptDTO = conceptMapper.conceptToConceptDTO(concept);
         assertEquals(ID, conceptDTO.getId());
-        assertEquals(USER_ID, conceptDTO.getUser().getId());
         assertEquals(NAME, conceptDTO.getName());
         assertEquals(EXPLANATION, conceptDTO.getExplanation());
         assertEquals(true, conceptDTO.isReviewed());

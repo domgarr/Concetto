@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Concept } from '../models/concept';
 import { ConceptService } from '../services/concept.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-concept',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class AddConceptComponent implements OnInit {
   concept : Concept;
-
+  defaultCategory : number;
   error : boolean;
 
   @ViewChild('conceptForm', {static: false}) conceptForm: any;
@@ -26,13 +27,16 @@ export class AddConceptComponent implements OnInit {
   showMessage : boolean = false;
   showMessageContent : string = "test";
 
-  constructor(private conceptService : ConceptService, private router : Router) { 
+  constructor(private conceptService : ConceptService, private router : Router, private activatedRoute : ActivatedRoute) { 
     this.concept = new Concept();
     this.error = false;
   }
 
   ngOnInit() {
-   
+    this.activatedRoute.paramMap.subscribe( params =>{
+     console.log(params);
+   })
+     
   }
 
   onConceptDone(){

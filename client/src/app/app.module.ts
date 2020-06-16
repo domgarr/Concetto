@@ -15,6 +15,7 @@ import { AppRoutingModule }        from './app-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { UserModule } from './user/user.module';
 import { ViewConceptComponent } from './view-concept/view-concept.component';
+import { ViewSubjectComponent } from './view-subject/view-subject.component';
 
 @NgModule({
   declarations: [
@@ -22,8 +23,7 @@ import { ViewConceptComponent } from './view-concept/view-concept.component';
     HeaderComponent,
     FooterComponent,
     LoginComponent,
-    PageNotFoundComponent,
-    ViewConceptComponent
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

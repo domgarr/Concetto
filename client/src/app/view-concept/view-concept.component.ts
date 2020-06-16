@@ -10,7 +10,8 @@ import { ConceptService } from '../services/concept.service';
 })
 export class ViewConceptComponent implements OnInit {
 
-  concepts : Concept[];
+  concepts : Array<Concept>;
+  
 
   constructor(private conceptService : ConceptService) { 
 
@@ -18,7 +19,9 @@ export class ViewConceptComponent implements OnInit {
 
   ngOnInit() {
     this.conceptService.getConcepts().subscribe(response =>{
-      this.concepts = response.body.concepts;
+     
+      //this.concepts = response.concepts;
+      
     })
   }
 

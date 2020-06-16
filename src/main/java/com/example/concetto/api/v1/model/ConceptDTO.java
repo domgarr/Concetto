@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.Date;
 
+//TODO: Rewrite this explanation.
 /*
     DTO in this case seems like overkill, but it's a good practice to use incase in the future there is a use-case.
     For example, if i wanted create a response that combined a call from another API and the call from my database - only
@@ -15,7 +16,6 @@ import java.util.Date;
 @Data
 public class ConceptDTO {
     private Long id;
-    private User user;
     private String name;
     private String explanation;
     private boolean reviewed;
