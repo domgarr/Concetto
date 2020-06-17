@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Concept } from '../models/concept';
+import { Subject } from '../models/subject';
 import { ConceptService } from '../services/concept.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { SubjectService } from '../services/subject.service';
+import { Observable, forkJoin, empty } from 'rxjs';
+
 
 @Component({
   selector: 'app-add-concept',
@@ -12,7 +15,10 @@ import { switchMap } from 'rxjs/operators';
 })
 export class AddConceptComponent implements OnInit {
   concept : Concept;
-  defaultCategory : number;
+  subjects : Subject[];
+  selectedId : number;
+
+  subjectSelected : number;
   error : boolean;
 
   @ViewChild('conceptForm', {static: false}) conceptForm: any;
@@ -27,27 +33,22 @@ export class AddConceptComponent implements OnInit {
   showMessage : boolean = false;
   showMessageContent : string = "test";
 
-  constructor(private conceptService : ConceptService, private router : Router, private activatedRoute : ActivatedRoute) { 
+  constructor(private conceptService : ConceptService, private subjectService : SubjectService, private activatedRoute : ActivatedRoute, private cdr : ChangeDetectorRef) { 
     this.concept = new Concept();
     this.error = false;
   }
 
   ngOnInit() {
-    this.activatedRoute.paramMap.subscribe( params =>{
-     console.log(params);
-   })
-     
-  }
-
-  onConceptDone(){
-    this.conceptService.addConcept(this.concept).subscribe((response) => {
-      this.showMessageContent = "'" + this.concept.name + "' is chuncked. Make sure to review regularly.";
-      this.showMessage = true;
-      this.concept = new Concept();
-
-      this.conceptForm.reset();
-    });
-    
+   
+    this.subjectService.getAllSubjects().subscribe(subjects =>{
+      this.subjects = subjects;
+      this.activatedRoute.paramMap.subscribe( params =>{
+         if(params.has("subject_id")){
+          let subjectId : string = params.get("subject_id");
+          this.setSubjectSelectedTrue(subjectId);
+         }
+      })
+  });
   }
 
   onConceptSave(){
@@ -58,6 +59,17 @@ export class AddConceptComponent implements OnInit {
 
       this.conceptForm.reset();
     })
+  }
+
+  setSubjectSelectedTrue(subjectId : string){
+    if(subjectId.length != 0){
+      let subjectIdNum = Number(subjectId);
+      this.subjects.forEach( subject =>{
+        if(subject.id === subjectIdNum){
+          subject.selected = true;
+        }
+      })
+  }
   }
 
 

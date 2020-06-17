@@ -25,8 +25,8 @@ export class ViewSubjectComponent implements OnInit {
     this.subjects.push(subject);
   }
 
-  onAddConceptToSubject(categoryId : number){
-    this.router.navigate(['/u/add-concept', categoryId]);
+  onAddConceptToSubject(subjectId : number){
+    this.router.navigate(['/u/add-concept', subjectId]);
   }
 
 }

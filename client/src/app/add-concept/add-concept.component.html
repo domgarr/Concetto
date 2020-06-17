@@ -6,6 +6,15 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+    <div class="input-group mt-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="subjectSelect">Subject</label>
+      </div>
+      <select class="custom-select" id="subjectSelect">
+        <option selected>Default...</option>
+        <option *ngFor="let subject of subjects" [value] ="subject.id" [selected]="subject.selected == true">{{subject.name}}</option>
+      </select>
+    </div>
     <div class="form-group my-2">
       <label for="nameInput">name
         <span *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">

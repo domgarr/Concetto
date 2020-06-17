@@ -17,7 +17,7 @@ const routes: Routes = [
     path : '', 
     children: [
         {path: 'add-concept', component: AddConceptComponent},
-        {path: 'add-concept/:category_id', component: AddConceptComponent},
+        {path: 'add-concept/:subject_id', component: AddConceptComponent},
         {path: 'view-concept', component: ViewConceptComponent},
         {path: 'view-subject', component: ViewSubjectComponent},
 
@@ -33,5 +33,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class UserRoutingModule { 
-  public static ADD_CONCEPT_PATH = "add-concept"
+  
 }
