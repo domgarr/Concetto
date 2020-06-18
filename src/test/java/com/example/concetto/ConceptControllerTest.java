@@ -4,6 +4,7 @@ import com.example.concetto.api.v1.model.ConceptDTO;
 import com.example.concetto.controllers.v1.ConceptController;
 import com.example.concetto.exception.NotFoundException;
 import com.example.concetto.models.Concept;
+import com.example.concetto.models.Subject;
 import com.example.concetto.models.User;
 import com.example.concetto.services.ConceptService;
 import com.google.gson.Gson;
@@ -15,13 +16,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
-import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,28 +39,6 @@ public class ConceptControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(conceptController).build();
-    }
-
-    @Test
-    public void listConcepts() throws Exception {
-        ConceptDTO concept1 = new ConceptDTO();
-        concept1.setId(1L);
-
-        concept1.setName("REST");
-        concept1.setExplanation("REST stands for Representation State Transfer.");
-        concept1.setReviewed(true);
-        concept1.setSimplified(true);
-
-
-        List<ConceptDTO> concepts = Arrays.asList(concept1);
-
-        when(conceptService.getAllConcepts()).thenReturn(concepts);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/concepts")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.concepts", hasSize(1))); //$ is the root.
-
     }
 
     @Test

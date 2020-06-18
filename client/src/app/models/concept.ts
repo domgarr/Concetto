@@ -1,7 +1,8 @@
-import { typeWithParameters } from '@angular/compiler/src/render3/util';
+import {Subject} from './subject';
 
 export class Concept {
     id : number;
+    subject : Subject;
     name : string;
     explanation : string;
     reviewed: boolean;
@@ -21,6 +22,14 @@ export class Concept {
 
     set Id(id : number) {
         this.id = id;
+    }
+
+    get Subject() : Subject {
+        return this.subject;
+    }
+
+    set Subject(subject : Subject) {
+        this.subject = subject;
     }
 
     get Name() : string {
@@ -54,8 +63,4 @@ export class Concept {
     set Simplified(simplified : boolean) {
         this.simplified = simplified;
     }
-
-    
-
-
 }

@@ -29,6 +29,7 @@ public class Subject {
     @NotNull
     private String name;
 
+    private int count;
     private int reviewCount;
     private Date lastUpdate;
 }

@@ -3,8 +3,10 @@ package com.example.concetto;
 import com.example.concetto.api.v1.mapper.ConceptMapper;
 import com.example.concetto.api.v1.model.ConceptDTO;
 import com.example.concetto.models.Concept;
+import com.example.concetto.models.Subject;
 import com.example.concetto.models.User;
 import com.example.concetto.repositories.ConceptRepository;
+import com.example.concetto.repositories.SubjectRepository;
 import com.example.concetto.repositories.UserRepository;
 import com.example.concetto.services.ConceptService;
 import com.example.concetto.services.ConceptServiceImpl;
@@ -31,6 +33,8 @@ public class ConceptRepositoryTest {
     ConceptRepository conceptRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    SubjectRepository subjectRepository;
 
     @BeforeEach
     void init() {
@@ -48,8 +52,14 @@ public class ConceptRepositoryTest {
 
         Optional<User> optionalUser = userRepository.findByEmail("asd@gmail.com");
 
+        Subject subject = new Subject();
+        subject.setName("Web");
+        subject.setUser(userSaved);
+
+        Subject savedSubject = subjectRepository.save(subject);
 
         Concept concept = new Concept();
+        concept.setSubject(savedSubject);
         concept.setName("REST");
         concept.setExplanation("Blah");
         concept.setUser(optionalUser.get());

@@ -1,17 +1,17 @@
+<div class="container">
 <form  #conceptForm="ngForm">
   <div class="container vh-80">
     <div  *ngIf="showMessage" class="alert alert-info alert-dismissible fade show my-3 break-word" role="alert">
       {{showMessageContent}}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="onCloseMessage($event)">
+        <span aria-hidden="true"><span aria-hidden="true">&times;</span></span>
       </button>
     </div>
     <div class="input-group mt-3">
       <div class="input-group-prepend">
         <label class="input-group-text" for="subjectSelect">Subject</label>
       </div>
-      <select class="custom-select" id="subjectSelect">
-        <option selected>Default...</option>
+      <select #subjectOption = "ngModel" [(ngModel)]="concept.subject.id" class="custom-select" id="subjectSelect" name="subjectSelect" required>
         <option *ngFor="let subject of subjects" [value] ="subject.id" [selected]="subject.selected == true">{{subject.name}}</option>
       </select>
     </div>
@@ -57,8 +57,9 @@
             </div>
       </div>
       <div class="d-flex justify-content-center mt-3">
-          <button id="doneButton" name="doneButton" type="button" [disabled]="!conceptForm.form.valid" (click)="onConceptDone()" class="btn btn-lg btn-success mr-2">done</button>
-          <button id="saveButton" name="saveButton" type="button" [disabled]="!nameInput.valid" (click)="onConceptSave()" class="btn btn-lg btn-primary ml-2">save</button>
+          <button id="doneButton" name="doneButton" type="button" [disabled]="!conceptForm.form.valid" (click)="onConceptSubmit(true)" class="btn btn-lg btn-success mr-2">done</button>
+          <button id="saveButton" name="saveButton" type="button" [disabled]="!nameInput.valid " (click)="onConceptSubmit(false)" class="btn btn-lg btn-primary ml-2">save</button>
       </div>
   </div>
 </form>
+</div>

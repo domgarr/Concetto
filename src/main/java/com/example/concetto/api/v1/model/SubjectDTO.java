@@ -6,5 +6,6 @@ import lombok.Data;
 public class SubjectDTO {
     private Long id;
     private String name;
+    private int count;
     private int reviewCount;
 }

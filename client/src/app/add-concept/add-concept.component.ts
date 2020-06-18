@@ -5,6 +5,7 @@ import { ConceptService } from '../services/concept.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SubjectService } from '../services/subject.service';
 import { Observable, forkJoin, empty } from 'rxjs';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 
 @Component({
@@ -15,10 +16,10 @@ import { Observable, forkJoin, empty } from 'rxjs';
 })
 export class AddConceptComponent implements OnInit {
   concept : Concept;
-  subjects : Subject[];
-  selectedId : number;
 
-  subjectSelected : number;
+  selectedSubject : Subject;
+  subjects : Subject[];
+  
   error : boolean;
 
   @ViewChild('conceptForm', {static: false}) conceptForm: any;
@@ -35,30 +36,54 @@ export class AddConceptComponent implements OnInit {
 
   constructor(private conceptService : ConceptService, private subjectService : SubjectService, private activatedRoute : ActivatedRoute, private cdr : ChangeDetectorRef) { 
     this.concept = new Concept();
+    this.concept.subject = new Subject(); //Prevent error upon first render.
     this.error = false;
   }
 
   ngOnInit() {
-   
     this.subjectService.getAllSubjects().subscribe(subjects =>{
       this.subjects = subjects;
       this.activatedRoute.paramMap.subscribe( params =>{
          if(params.has("subject_id")){
           let subjectId : string = params.get("subject_id");
           this.setSubjectSelectedTrue(subjectId);
+         }else{
+           subjects[0].selected = true;
          }
-      })
+      });
   });
   }
 
-  onConceptSave(){
-    this.conceptService.addConcept(this.concept).subscribe((response) =>{
-      this.showMessageContent = "'" + this.concept.name + "' has been saved. You may complete it at a later time.";
-      this.showMessage = true;
-      this.concept = new Concept();
+  onConceptSubmit(isDone : boolean){
+    let actionMessage : string;
+    if(isDone){
+      actionMessage = "'" + this.concept.name + "' is chuncked. Make sure to review regularly.";
+    }else{
+      actionMessage = "' has been saved. You may complete it at a later time.";
+    }
 
+    this.conceptService.addConcept(this.concept).subscribe((response) =>{
+      this.showMessageContent = "'" + this.concept.name + actionMessage;
+      this.showMessage = true;
       this.conceptForm.reset();
-    })
+      /* After resetting the form, the subject.id will be set to null. Then we reinstantiate the subject.id using the
+      cached value (selectedSubject.id). 
+
+      Since the model changed, the view should udpate. Note we are using two-way binding in this example.
+      Though for some reason, when I changed the model by setting the subject.id, no change was noticed in the view. To solve
+      this problemn for the time being. I force the view to update after resetting the form and once more after settting subject.id.
+      */
+      console.log(this.concept);
+      this.cdr.detectChanges(); 
+      this.concept.subject.id = this.selectedSubject.id;
+
+      this.cdr.detectChanges();
+      console.log(this.concept);
+
+    },
+    err =>{
+      console.log(err);
+    });
   }
 
   setSubjectSelectedTrue(subjectId : string){
@@ -66,12 +91,16 @@ export class AddConceptComponent implements OnInit {
       let subjectIdNum = Number(subjectId);
       this.subjects.forEach( subject =>{
         if(subject.id === subjectIdNum){
+          //Because conceptForm.reset will nullify all form values (2-way binding), making copies of the object is necessary.
+          this.selectedSubject = {...subject};
+          this.concept.subject = {...subject};
           subject.selected = true;
         }
-      })
+      });
+    }
   }
+
+  onCloseMessage(){
+    this.showMessage = false;
   }
-
-
-
 }

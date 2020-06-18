@@ -20,6 +20,11 @@ public class Concept {
     @NotNull
     private User user;
 
+    @ManyToOne()
+    @JoinColumn(name="subject_id", nullable = false)
+    @NotNull
+    private Subject subject;
+
     @NotBlank
     @Size(max = 100)
     private String name;

@@ -7,13 +7,11 @@ import com.example.concetto.api.v1.model.ConceptListDTO;
 import com.example.concetto.api.v1.model.UserDTO;
 import com.example.concetto.models.Concept;
 import com.example.concetto.exception.DataIntegrityError;
+import com.example.concetto.models.Subject;
 import com.example.concetto.models.User;
 import com.example.concetto.repositories.ConceptRepository;
 import com.example.concetto.repositories.UserRepository;
-import com.example.concetto.services.ConceptService;
-import com.example.concetto.services.ConceptServiceImpl;
-import com.example.concetto.services.UserService;
-import com.example.concetto.services.UserServiceImpl;
+import com.example.concetto.services.*;
 import com.example.concetto.utility.AuthUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +36,13 @@ import java.util.Set;
 public class ConceptController {
     private final ConceptService conceptService;
     private final UserService userService;
+    private final SubjectService subjectService;
 
 
-    public ConceptController(ConceptService conceptService, UserService userService) {
+    public ConceptController(ConceptService conceptService, UserService userService, SubjectService subjectService) {
         this.conceptService = conceptService;
         this.userService = userService;
+        this.subjectService = subjectService;
     }
 
     //TODO: Add error handling

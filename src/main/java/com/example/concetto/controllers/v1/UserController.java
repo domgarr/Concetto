@@ -1,5 +1,7 @@
 package com.example.concetto.controllers.v1;
 
+import com.example.concetto.models.Subject;
+import com.example.concetto.services.SubjectService;
 import com.example.concetto.services.UserService;
 import com.example.concetto.utility.AuthUtility;
 import com.google.gson.Gson;
@@ -16,9 +18,11 @@ import java.util.HashMap;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final SubjectService subjectService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, SubjectService subjectService) {
         this.userService = userService;
+        this.subjectService = subjectService;
     }
 
     //https://spring.io/guides/tutorials/spring-boot-oauth2/
@@ -29,8 +33,15 @@ public class UserController {
         String email = AuthUtility.getEmail(authentication);
         if (userService.createUserIfNotFound(email)) {
             successMessage = "Account created. ".concat(successMessage);
+            /* When a user is first created. Add a default subject to the new user's account;
+             A default subject is needed because Concepts should be categorized and when a user first creates an account
+             they might not of created a subject yet. To prevent any errors a default subject is added.
+             */
+            Subject subject = new Subject();
+            subject.setName("Default");
+            subject.setUser(userService.getUserByEmail(AuthUtility.getEmail(authentication)));
+            subjectService.save(subject);
         }
-
         //Return a json containing a field
         HashMap<String, String> jsonMap = new HashMap<>();
         jsonMap.put("message", successMessage);
