@@ -22,7 +22,7 @@ export class AddConceptComponent implements OnInit {
   
   error : boolean;
 
-  @ViewChild('conceptForm', {static: false}) conceptForm: any;
+  @ViewChild('conceptForm') conceptForm: any;
 
   nameReqError : string = "name is required."
   nameMinError : string = "name must be atleast one character long."; 
