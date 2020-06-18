@@ -4,9 +4,6 @@ import { Subject } from '../models/subject';
 import { ConceptService } from '../services/concept.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SubjectService } from '../services/subject.service';
-import { Observable, forkJoin, empty } from 'rxjs';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
-
 
 @Component({
   selector: 'app-add-concept',
@@ -49,9 +46,12 @@ export class AddConceptComponent implements OnInit {
           this.setSubjectSelectedTrue(subjectId);
          }else{
            subjects[0].selected = true;
+           this.concept.subject = {...subjects[0]};
+           this.selectedSubject = {...subjects[0]};
          }
       });
   });
+
   }
 
   onConceptSubmit(isDone : boolean){
@@ -73,13 +73,10 @@ export class AddConceptComponent implements OnInit {
       Though for some reason, when I changed the model by setting the subject.id, no change was noticed in the view. To solve
       this problemn for the time being. I force the view to update after resetting the form and once more after settting subject.id.
       */
-      console.log(this.concept);
       this.cdr.detectChanges(); 
       this.concept.subject.id = this.selectedSubject.id;
 
       this.cdr.detectChanges();
-      console.log(this.concept);
-
     },
     err =>{
       console.log(err);
@@ -100,7 +97,19 @@ export class AddConceptComponent implements OnInit {
     }
   }
 
-  onCloseMessage(){
-    this.showMessage = false;
+  onOptionChange(event){
+    console.log(this.subjects);
+    let subjectIdSelected = Number(event.target.value);  
+    this.subjects.forEach(subject =>{
+        if(subject.id === subjectIdSelected){
+          subject.selected = true;
+          this.selectedSubject = {...subject};
+          this.concept.subject = {...subject};
+        }else{
+          subject.selected = false;
+        }
+    });
   }
+
+  
 }

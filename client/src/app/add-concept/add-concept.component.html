@@ -11,7 +11,7 @@
       <div class="input-group-prepend">
         <label class="input-group-text" for="subjectSelect">Subject</label>
       </div>
-      <select #subjectOption = "ngModel" [(ngModel)]="concept.subject.id" class="custom-select" id="subjectSelect" name="subjectSelect" required>
+      <select #subjectOption = "ngModel" [(ngModel)]="concept.subject.id" class="custom-select" id="subjectSelect" name="subjectSelect" (change)="onOptionChange($event)" required>
         <option *ngFor="let subject of subjects" [value] ="subject.id" [selected]="subject.selected == true">{{subject.name}}</option>
       </select>
     </div>
