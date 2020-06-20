@@ -6,6 +6,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { ViewConceptComponent } from '../view-concept/view-concept.component';
 import { ViewSubjectComponent } from '../view-subject/view-subject.component';
+import { StudyComponent } from '../study/study.component';
 
 const routes: Routes = [
   {
@@ -18,7 +19,7 @@ const routes: Routes = [
     children: [
         {path: 'add-concept', component: AddConceptComponent},
         {path: 'add-concept/:subject_id', component: AddConceptComponent},
-        {path: 'view-concept', component: ViewConceptComponent},
+        {path: 'study/:subject_id', component: StudyComponent},
         {path: 'view-subject', component: ViewSubjectComponent},
 
         {path:'', component: DashboardComponent}

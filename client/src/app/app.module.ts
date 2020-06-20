@@ -16,6 +16,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { UserModule } from './user/user.module';
 import { ViewConceptComponent } from './view-concept/view-concept.component';
 import { ViewSubjectComponent } from './view-subject/view-subject.component';
+import { StudyComponent } from './study/study.component';
 
 @NgModule({
   declarations: [

@@ -31,9 +31,15 @@ public class ConceptServiceImpl implements ConceptService {
 
     @Override
     public List<ConceptDTO> getAllConceptsByUserId(Long id) {
-
-
         return conceptRepository.findAllByUserId(id)
+                .stream()
+                .map(conceptMapper::conceptToConceptDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ConceptDTO> findAllConceptsBySubjectId(Long subjectId) {
+        return conceptRepository.findALlBySubjectId(subjectId)
                 .stream()
                 .map(conceptMapper::conceptToConceptDTO)
                 .collect(Collectors.toList());

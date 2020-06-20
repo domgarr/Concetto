@@ -30,10 +30,15 @@ public class SubjectController {
         return savedSubjectDTO;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     List<SubjectDTO> getAllSubjectsByUserId(OAuth2Authentication authentication){
         User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));
         List<SubjectDTO> subjects = subjectService.findAllByUserId(user.getId());
         return subjects;
+    }
+
+    @GetMapping("/{id}")
+    SubjectDTO getSubjectById(@PathVariable Long id){
+        return subjectService.findBYId(id);
     }
 }

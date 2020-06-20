@@ -8,12 +8,17 @@ import { Subject } from '../models/subject';
 })
 export class SubjectService {
 
-  private readonly subjectURL = "/proxy/api/v1/subject"
+  private readonly SUBJECT_URL = "/proxy/api/v1/subject"
+  private readonly FIND_ALL_SUBJECTS = this.SUBJECT_URL + "/all";
 
   constructor(private http : HttpClient) { }
 
   getAllSubjects() : Observable<Subject[]>{
-    return this.http.get<Subject[]>(this.subjectURL);
+    return this.http.get<Subject[]>(this.FIND_ALL_SUBJECTS);
+  }
+
+  getSubject(id : Number){
+    return this.http.get<Subject>(this.SUBJECT_URL + "/" + id)
   }
 
   saveSubject(subject : Subject) : Observable<Subject> {
@@ -24,6 +29,6 @@ export class SubjectService {
       })
     };
     
-    return this.http.put<Subject>(this.subjectURL, subject, httpOptions);
+    return this.http.put<Subject>(this.SUBJECT_URL, subject, httpOptions);
   }
 }

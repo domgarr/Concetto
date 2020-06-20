@@ -7,8 +7,9 @@ import {Observable, of} from 'rxjs';
   providedIn: 'root'
 })
 export class ConceptService {
-  private readonly conceptUrl = "/proxy/api/v1/concepts"
-  private readonly getAllConceptsUrl = "/proxy/api/v1/concepts/all"
+  private readonly conceptUrl = "/proxy/api/v1/concept";
+  private readonly getAllConceptsUrl = "/proxy/api/v1/concept/all";
+  private readonly GET_ALL_CONCEPTS_BY_SUBJECT_ID = "/proxy/api/v1/concept/subject/";
 
   constructor(private http : HttpClient) { }
 
@@ -22,7 +23,11 @@ export class ConceptService {
     return this.http.get<Concept[]>(this.getAllConceptsUrl, this.getHttpOptions());
   }
 
-  getHttpOptions(){
+  getAllConceptsBySubjectId(id : Number){
+    return this.http.get<Concept[]>(this.GET_ALL_CONCEPTS_BY_SUBJECT_ID + id, this.getHttpOptions());
+  }
+
+  private getHttpOptions(){
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'

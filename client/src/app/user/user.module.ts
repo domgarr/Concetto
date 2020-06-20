@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { AddSubjectComponent } from '../add-subject/add-subject.component';
 import { ViewSubjectComponent } from '../view-subject/view-subject.component';
 import { ViewConceptComponent } from '../view-concept/view-concept.component';
+import { StudyComponent } from '../study/study.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ViewConceptComponent } from '../view-concept/view-concept.component';
     AddConceptComponent,
     AddSubjectComponent,
     ViewSubjectComponent,
-    ViewConceptComponent
+    ViewConceptComponent,
+    StudyComponent
     ],
   imports: [
     CommonModule,

@@ -12,4 +12,7 @@ public interface ConceptRepository extends JpaRepository<Concept, Long> {
     @Query(value = "select * from concept as c where c.user_id = :userId",
             nativeQuery = true)
     List<Concept> findAllByUserId(@Param("userId") Long id);
+
+    @Query(value="select * from concept c where c.subject_id = :subjectId", nativeQuery=true)
+    List<Concept> findALlBySubjectId(@Param("subjectId") Long id);
 }

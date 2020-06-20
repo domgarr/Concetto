@@ -18,8 +18,7 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forRoot(
       appRoutes,
-      {initialNavigation: false, // the propery to delay navigationn
-      enableTracing: true //For debugging
+      {initialNavigation: false
       }
     )
   ],

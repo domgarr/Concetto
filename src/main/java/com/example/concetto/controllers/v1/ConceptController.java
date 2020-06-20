@@ -27,11 +27,12 @@ import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 import java.security.Principal;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/api/v1/concepts")
+@RequestMapping("/api/v1/concept")
 @Slf4j
 public class ConceptController {
     private final ConceptService conceptService;
@@ -56,6 +57,12 @@ public class ConceptController {
     @GetMapping("user/{id}")
     public ResponseEntity<ConceptDTO> getConceptByUserId(@PathVariable Long id) {
         return new ResponseEntity<ConceptDTO>(conceptService.findById(id), HttpStatus.OK);
+    }
+
+    //TODO: Add error handling
+    @GetMapping("/subject/{id}")
+    public ResponseEntity<List<ConceptDTO>> getConceptsBySubjectId(@PathVariable Long id) {
+        return new ResponseEntity<List<ConceptDTO>>(conceptService.findAllConceptsBySubjectId(id), HttpStatus.OK);
     }
 
     @PostMapping("/reviewed")

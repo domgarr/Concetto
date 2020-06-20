@@ -29,4 +29,10 @@ export class ViewSubjectComponent implements OnInit {
     this.router.navigate(['/u/add-concept', subjectId]);
   }
 
+  onStudySubject(subjectId : number){
+    this.router.navigate(['/u/study', subjectId]);
+  }
+
+
+
 }
