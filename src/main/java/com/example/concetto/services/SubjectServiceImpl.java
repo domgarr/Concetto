@@ -45,4 +45,10 @@ public class SubjectServiceImpl implements SubjectService {
         }
         return subjectOptional.map(subjectMapper::subjectToSubjectDTO).get();
     }
+
+    @Override
+    public int incrementCount(Long id) {
+        return subjectRepository.incrementCount(id);
+    }
+
 }

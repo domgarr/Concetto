@@ -22,6 +22,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
@@ -74,6 +75,7 @@ public class ConceptController {
         return null;
     }
 
+    @Transactional
     @PutMapping
     public ResponseEntity<Concept> saveConcept(@RequestBody Concept concept, OAuth2Authentication authentication) {
         User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));
@@ -93,7 +95,7 @@ public class ConceptController {
             throw new DataIntegrityError(errorMessage.substring(0, errorMessage.length() - 2));
         }
 
-
+        subjectService.incrementCount(concept.getSubject().getId());
         return new ResponseEntity<Concept>(conceptService.save(concept), HttpStatus.OK);
     }
 }

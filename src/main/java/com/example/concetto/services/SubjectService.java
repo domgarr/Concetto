@@ -9,4 +9,5 @@ public interface SubjectService {
     SubjectDTO save (Subject subject);
     List<SubjectDTO> findAllByUserId(Long id);
     SubjectDTO findBYId(Long id);
+    int incrementCount(Long id);
 }

@@ -6,7 +6,7 @@
             <div class="card-body ">
                 <h5 class="card-title">{{subject.name}} <span class="badge badge-primary">{{subject.reviewCount}}</span> </h5>
                 <h6 class="card-subtitle mb-2 text-muted">Last Reviewed: </h6>
-                <p class="card-text">Size: {{subject.reviewCount}}</p>
+                <p class="card-text">Size: {{subject.count}}</p>
                 <button type="button" class="btn btn-success mr-2" (click)="onAddConceptToSubject(subject.id)">Add</button>
                 <button type="button" class="btn btn-primary" (click)="onStudySubject(subject.id)">Study</button>
             </div>
