@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {Concept} from '../models/concept';
 import { ConceptService } from '../services/concept.service';
 declare var $: any;
@@ -8,22 +8,19 @@ declare var $: any;
   templateUrl: './view-concept.component.html',
   styleUrls: ['./view-concept.component.css']
 })
-export class ViewConceptComponent implements OnChanges {
+export class ViewConceptComponent implements OnInit {
   @Input() 
   concept : Concept;
   @Output() goodPressed = new EventEmitter<boolean>();
   
-  set Concept(concept: Concept) {
-    this.concept = concept;
-  };
   isShowButtonVisible : boolean;
 
   constructor(private conceptService : ConceptService) { 
     this.isShowButtonVisible = true;
   }
 
-  ngOnChanges(changes){
-    console.log(changes);
+  ngOnInit() {
+    this.concept = new Concept();
   }
 
   onClickShow(){
