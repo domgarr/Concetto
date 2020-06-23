@@ -25,6 +25,11 @@ public class Concept {
     @NotNull
     private Subject subject;
 
+    @OneToOne()
+    @JoinColumn(name="interval_id", nullable = false)
+    @NotNull
+    private InterInterval interInterval;
+
     @NotBlank
     @Size(max = 100)
     private String name;

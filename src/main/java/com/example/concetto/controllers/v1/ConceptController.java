@@ -1,23 +1,16 @@
 package com.example.concetto.controllers.v1;
 
-import com.example.concetto.api.v1.mapper.ConceptMapper;
-import com.example.concetto.api.v1.mapper.UserMapper;
 import com.example.concetto.api.v1.model.ConceptDTO;
 import com.example.concetto.api.v1.model.ConceptListDTO;
-import com.example.concetto.api.v1.model.UserDTO;
 import com.example.concetto.models.Concept;
 import com.example.concetto.exception.DataIntegrityError;
-import com.example.concetto.models.Subject;
+import com.example.concetto.models.InterInterval;
 import com.example.concetto.models.User;
-import com.example.concetto.repositories.ConceptRepository;
-import com.example.concetto.repositories.UserRepository;
 import com.example.concetto.services.*;
 import com.example.concetto.utility.AuthUtility;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.resource.UserRedirectRequiredException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
-import java.security.Principal;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -39,12 +29,14 @@ public class ConceptController {
     private final ConceptService conceptService;
     private final UserService userService;
     private final SubjectService subjectService;
+    private final InterIntervalService interIntervalService;
 
 
-    public ConceptController(ConceptService conceptService, UserService userService, SubjectService subjectService) {
+    public ConceptController(ConceptService conceptService, UserService userService, SubjectService subjectService, InterIntervalService interIntervalService) {
         this.conceptService = conceptService;
         this.userService = userService;
         this.subjectService = subjectService;
+        this.interIntervalService = interIntervalService;
     }
 
     //TODO: Add error handling
@@ -79,7 +71,10 @@ public class ConceptController {
     @PutMapping
     public ResponseEntity<Concept> saveConcept(@RequestBody Concept concept, OAuth2Authentication authentication) {
         User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));
+        InterInterval interInterval = interIntervalService.save(new InterInterval());
+
         concept.setUser(user);
+        concept.setInterInterval(interInterval);
 
         Set<ConstraintViolation<Concept>> constraintViolations = Validation.buildDefaultValidatorFactory().getValidator().validate(concept);
         if (constraintViolations.size() > 0) {
