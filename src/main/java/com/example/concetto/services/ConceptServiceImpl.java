@@ -69,5 +69,13 @@ public class ConceptServiceImpl implements ConceptService {
         return concept;
     }
 
+    @Override
+    public List<ConceptDTO> findAllConceptsBySubjectIdScheduledForReview(Long id) {
+        return conceptRepository.findAllBySubjectIdThatAreScheduledForReview(id)
+                .stream()
+                .map(conceptMapper::conceptToConceptDTO)
+                .collect(Collectors.toList());
+    }
+
 
 }

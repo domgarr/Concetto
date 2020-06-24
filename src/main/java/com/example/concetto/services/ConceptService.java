@@ -12,4 +12,5 @@ public interface ConceptService {
     List<ConceptDTO> findAllConceptsBySubjectId(Long id);
     ConceptDTO findById(Long id);
     Concept save(Concept concept);
+    List<ConceptDTO> findAllConceptsBySubjectIdScheduledForReview(Long id);
 }

@@ -42,9 +42,10 @@ public class Concept {
     private boolean simplified;
     private boolean done;
     private Date dateCreated;
-    private Date dateLastReviewed;
+    private Date nextReviewDate;
 
     public Concept() {
-        dateCreated = new Date();
+        this.dateCreated = new Date();
+        this.nextReviewDate = new Date();
     }
 }

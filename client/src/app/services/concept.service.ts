@@ -10,6 +10,7 @@ export class ConceptService {
   private readonly conceptUrl = "/proxy/api/v1/concept";
   private readonly getAllConceptsUrl = "/proxy/api/v1/concept/all";
   private readonly GET_ALL_CONCEPTS_BY_SUBJECT_ID = "/proxy/api/v1/concept/subject/";
+  private readonly SCHEDULED = "scheduled";
 
   constructor(private http : HttpClient) { }
 
@@ -23,8 +24,12 @@ export class ConceptService {
     return this.http.get<Concept[]>(this.getAllConceptsUrl, this.getHttpOptions());
   }
 
-  getAllConceptsBySubjectId(id : Number){
+  getAllConceptsBySubjectId(id : number){
     return this.http.get<Concept[]>(this.GET_ALL_CONCEPTS_BY_SUBJECT_ID + id, this.getHttpOptions());
+  }
+
+  getAllConceptsBySubjectIdScheduledForReview(id : number){
+    return this.http.get<Concept[]>(this.GET_ALL_CONCEPTS_BY_SUBJECT_ID + id, {params: {"is_scheduled" : "true"}} );
   }
 
   private getHttpOptions(){

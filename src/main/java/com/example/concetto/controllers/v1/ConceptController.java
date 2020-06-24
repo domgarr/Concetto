@@ -9,6 +9,7 @@ import com.example.concetto.models.User;
 import com.example.concetto.services.*;
 import com.example.concetto.utility.AuthUtility;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -54,8 +55,13 @@ public class ConceptController {
 
     //TODO: Add error handling
     @GetMapping("/subject/{id}")
-    public ResponseEntity<List<ConceptDTO>> getConceptsBySubjectId(@PathVariable Long id) {
-        return new ResponseEntity<List<ConceptDTO>>(conceptService.findAllConceptsBySubjectId(id), HttpStatus.OK);
+    public ResponseEntity<List<ConceptDTO>> getConceptsBySubjectId(@PathVariable Long id, @RequestParam(value = "is_scheduled", required = false, defaultValue = "false") boolean scheduled) {
+        if(scheduled){
+            //Return Concepts that are ready to be reviewed.
+            return new ResponseEntity<List<ConceptDTO>>(conceptService.findAllConceptsBySubjectIdScheduledForReview(id), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<List<ConceptDTO>>(conceptService.findAllConceptsBySubjectId(id), HttpStatus.OK);
+        }
     }
 
     @PostMapping("/reviewed")
@@ -75,6 +81,7 @@ public class ConceptController {
 
         concept.setUser(user);
         concept.setInterInterval(interInterval);
+
 
         Set<ConstraintViolation<Concept>> constraintViolations = Validation.buildDefaultValidatorFactory().getValidator().validate(concept);
         if (constraintViolations.size() > 0) {

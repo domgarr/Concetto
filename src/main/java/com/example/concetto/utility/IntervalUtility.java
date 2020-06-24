@@ -9,8 +9,10 @@ public class IntervalUtility {
 
     public static int calculate(InterInterval interInterval){
         if(interInterval.getRepitionCount() == 0){
-            return 1;
+            return 0;
         }else if(interInterval.getRepitionCount() == 1){
+            return 1;
+        }else if(interInterval.getRepitionCount() == 2){
             return 6;
         }else{
             return (int)Math.round(interInterval.getLength() * calculateEFactor(interInterval.getEFactor(), interInterval.getResponseRating()));

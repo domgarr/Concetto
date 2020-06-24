@@ -27,7 +27,7 @@ concepts : Concept[];
     this.activatedRoute.paramMap.subscribe(params =>{
       let subjectId : number = Number(params.get("subject_id"));
       //TODO: Load in data using AuthGuard?
-      this.conceptService.getAllConceptsBySubjectId(subjectId).subscribe(concepts =>{
+      this.conceptService.getAllConceptsBySubjectIdScheduledForReview(subjectId).subscribe(concepts =>{
         this.concepts = concepts;
         this.concept = concepts[this.index];
       });
