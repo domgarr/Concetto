@@ -1,4 +1,6 @@
 import {Subject} from './subject';
+import { InterInterval } from './interInteval';
+import { InterIntervalService } from '../services/inter-interval.service';
 
 export class Concept {
     id : number;
@@ -8,6 +10,7 @@ export class Concept {
     reviewed: boolean;
     simplified: boolean;
     done : boolean;
+    interInterval : InterInterval;
 
     constructor(){
         this.name = "";
@@ -31,6 +34,16 @@ export class Concept {
     set Subject(subject : Subject) {
         this.subject = subject;
     }
+
+    get InterInterval() : InterInterval {
+        return this.interInterval;
+    }
+
+    set InterInterval(interInteval : InterInterval) {
+        this.interInterval = interInteval;
+    }
+
+
 
     get Name() : string {
         return this.name;

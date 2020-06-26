@@ -17,4 +17,9 @@ public class InterIntervalServiceImpl implements InterIntervalService {
     public InterInterval save(InterInterval interInterval) {
         return interIntervalRepository.save(interInterval);
     }
+
+    @Override
+    public InterInterval find(Long id) {
+        return this.interIntervalRepository.findById(id).get();
+    }
 }

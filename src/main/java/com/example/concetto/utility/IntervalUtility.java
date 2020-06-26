@@ -7,19 +7,31 @@ public class IntervalUtility {
     public static double initialEFactor = 2.5D;
 
 
-    public static int calculate(InterInterval interInterval){
+    public static InterInterval calculateNextInterval(int responseRating, InterInterval interInterval){
+        int length;
         if(interInterval.getRepitionCount() == 0){
-            return 0;
+            length = 0;
         }else if(interInterval.getRepitionCount() == 1){
-            return 1;
+            length = 1;
         }else if(interInterval.getRepitionCount() == 2){
-            return 6;
+            length = 6;
         }else{
-            return (int)Math.round(interInterval.getLength() * calculateEFactor(interInterval.getEFactor(), interInterval.getResponseRating()));
+            interInterval.setEFactor(calculateEFactor(interInterval.getEFactor(), responseRating));
+            length = (int)Math.round(interInterval.getLength() * interInterval.getEFactor());
         }
+
+        interInterval.setLength(length);
+        interInterval.setResponseRating(responseRating);
+        interInterval.setRepitionCount(interInterval.getRepitionCount() + 1);
+        return interInterval;
     }
 
     public static double calculateEFactor(double prevEFactor, int responseRated){
-        return prevEFactor - 0.8D + 0.28D * responseRated - 0.02D * Math.pow(responseRated, 2D);
+        double newEFactor = prevEFactor - 0.8D + 0.28D * responseRated - 0.02D * Math.pow(responseRated, 2D);
+        if(newEFactor < 1.3D){
+            return 1.3D;
+        }else{
+            return newEFactor;
+        }
     }
 }

@@ -14,7 +14,8 @@
     <div class="concept">
         <app-view-concept 
             [concept]="concept"
-            (goodPressed)="onGoodPressed($event)">
+            (goodPressed)="onGoodButtonPressed($event)"
+            (perfectPressed)="onPerfectButtonPressed($event)">
         </app-view-concept>
     </div>
 </div>

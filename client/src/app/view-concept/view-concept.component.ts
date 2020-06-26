@@ -12,6 +12,7 @@ export class ViewConceptComponent implements OnInit {
   @Input() 
   concept : Concept;
   @Output() goodPressed = new EventEmitter<boolean>();
+  @Output() perfectPressed = new EventEmitter<boolean>();
   
   isShowButtonVisible : boolean;
 
@@ -27,10 +28,19 @@ export class ViewConceptComponent implements OnInit {
     this.isShowButtonVisible = false;
   }
 
-  onGoodPressed(){
+  onGoodButtonPressed(){
     this.goodPressed.emit();
+    this.hideExplanationAndShowVisibleButton();
+  }
+
+  onPerfectButtonPressed(){
+    this.perfectPressed.emit();
+    this.hideExplanationAndShowVisibleButton();
+  }
+
+  hideExplanationAndShowVisibleButton(){
     this.isShowButtonVisible = true;
-    $('#explanation').collapse('hide')
+    $('#explanation').collapse('hide');
   }
 
 }
