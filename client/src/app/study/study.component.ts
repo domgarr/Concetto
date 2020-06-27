@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SubjectService } from '../services/subject.service';
 import { Subject } from '../models/subject';
 import { InterIntervalService } from '../services/inter-interval.service';
+import { empty } from 'rxjs';
 
 @Component({
   selector: 'app-study',
@@ -15,15 +16,18 @@ export class StudyComponent implements OnInit {
 
 concept : Concept;
 subject : Subject;
-private index : number;
+
 concepts : Concept[];
+
+rehearsedConcepts : Concept[];
+renderViewConcept : boolean;
 
 private readonly GOOD_RESPONSE_VALUE = 3;
 private readonly PERFECT_RESPONSE_VALUE = 5;
   
 
   constructor(private conceptService : ConceptService, private subjectService : SubjectService, private activatedRoute : ActivatedRoute, private router : Router, private interIntervalService : InterIntervalService) {
-    this.index = 0;
+    this.renderViewConcept = true;
     this.subject = new Subject();
    }
 
@@ -32,9 +36,11 @@ private readonly PERFECT_RESPONSE_VALUE = 5;
       let subjectId : number = Number(params.get("subject_id"));
       //TODO: Load in data using AuthGuard?
       this.conceptService.getAllConceptsBySubjectIdScheduledForReview(subjectId).subscribe(concepts =>{
-        console.log(concepts);
+        if(concepts.length == 0){
+          this.renderViewConcept = false;
+        }
         this.concepts = concepts;
-        this.concept = concepts[this.index];
+        this.concept = this.concepts.shift();
       });
       this.subjectService.getSubject(subjectId).subscribe(subject =>{
         this.subject = subject;
@@ -54,19 +60,32 @@ private readonly PERFECT_RESPONSE_VALUE = 5;
     this.router.navigate(['/u/add-concept', this.subject.id]);
   }
 
-
   responseButtonPressed(responseValue){
     this.concept.interInterval.responseRating = responseValue;
     this.interIntervalService.calculateNextInterInterval(this.concept.interInterval).subscribe(interInterval =>{
       this.concept.interInterval = interInterval;
-      this.nextConcept();
+      
+      if(this.concepts.length == 0){
+        this.renderViewConcept = false;
+        return;
+      }
+
+      if(!this.isRehearsed(responseValue)){
+        this.placeConceptAtEnd();
+      }     
+      this.concept = this.concepts.shift();
     });
   }
 
-  nextConcept(){
-    this.index++;
-    if(this.index < this.concepts.length){
-      this.concept = this.concepts[this.index];
+  placeConceptAtEnd() {
+    this.concepts.push(this.concept);
+    
+  }
+
+  isRehearsed(responseValue){
+    if(responseValue >= this.GOOD_RESPONSE_VALUE){
+      return true;
     }
+    return false; 
   }
 }
