@@ -46,7 +46,7 @@ public class ConceptServiceImpl implements ConceptService {
     }
 
     @Override
-    public ConceptDTO findById(Long id) {
+    public ConceptDTO findDtoById(Long id) {
 
         Optional<Concept> conceptOptional = conceptRepository.findById(id);
 
@@ -55,6 +55,16 @@ public class ConceptServiceImpl implements ConceptService {
         }
 
         return conceptOptional.map(conceptMapper::conceptToConceptDTO).get();
+    }
+
+    @Override
+    public Concept findById(Long id) {
+        Optional<Concept> conceptOptional = conceptRepository.findById(id);
+
+        if (!conceptOptional.isPresent()) {
+            throw new NotFoundException("Concept not found.");
+        }
+        return conceptOptional.get();
     }
 
     @Override
@@ -75,6 +85,11 @@ public class ConceptServiceImpl implements ConceptService {
                 .stream()
                 .map(conceptMapper::conceptToConceptDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Concept findByInterIntervalId(Long id) {
+        return conceptRepository.findByInterIntervalId(id);
     }
 
 

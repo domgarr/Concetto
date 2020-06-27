@@ -14,11 +14,6 @@ public class InterInterval {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "concept_id", nullable = false)
-    private Concept concept;
-
     private int repitionCount;
     private int length;
     private double eFactor;
@@ -27,7 +22,7 @@ public class InterInterval {
     private int responseRating;
 
     public InterInterval(){
-        this.repitionCount = 1;
+        this.repitionCount = 0;
         //Response rating doesn't matter for the first calculation.
         IntervalUtility.calculateNextInterval(0,this);
         this.eFactor = IntervalUtility.initialEFactor;

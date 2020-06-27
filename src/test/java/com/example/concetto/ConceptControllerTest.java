@@ -1,10 +1,8 @@
 package com.example.concetto;
 
-import com.example.concetto.api.v1.model.ConceptDTO;
 import com.example.concetto.controllers.v1.ConceptController;
 import com.example.concetto.exception.NotFoundException;
 import com.example.concetto.models.Concept;
-import com.example.concetto.models.Subject;
 import com.example.concetto.models.User;
 import com.example.concetto.services.ConceptService;
 import com.google.gson.Gson;
@@ -46,7 +44,7 @@ public class ConceptControllerTest {
         Concept concept = new Concept();
         concept.setId(1L);
 
-        when(conceptService.findById(anyLong())).thenThrow(NotFoundException.class);
+        when(conceptService.findDtoById(anyLong())).thenThrow(NotFoundException.class);
 
         mockMvc.perform(get("/api/v1/concepts/user/4")).andExpect(status().isNotFound());
     }

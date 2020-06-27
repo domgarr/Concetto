@@ -10,7 +10,9 @@ public interface ConceptService {
     List<ConceptDTO> getAllConcepts();
     List<ConceptDTO> getAllConceptsByUserId(Long id);
     List<ConceptDTO> findAllConceptsBySubjectId(Long id);
-    ConceptDTO findById(Long id);
+    ConceptDTO findDtoById(Long id);
+    Concept findById(Long id);
     Concept save(Concept concept);
     List<ConceptDTO> findAllConceptsBySubjectIdScheduledForReview(Long id);
+    Concept findByInterIntervalId(Long id);
 }

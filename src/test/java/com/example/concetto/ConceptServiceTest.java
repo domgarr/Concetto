@@ -55,7 +55,7 @@ public class ConceptServiceTest {
         when(conceptRepository.findById(anyLong())).thenReturn(conceptOptional);
 
         NotFoundException thrown = assertThrows(NotFoundException.class,
-                () -> conceptService.findById(1L));
+                () -> conceptService.findDtoById(1L));
 
         assertTrue(thrown.getMessage().contains("Concept not found."));
     }

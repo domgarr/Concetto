@@ -26,7 +26,7 @@ public class Concept {
     private Subject subject;
 
     @OneToOne()
-    @JoinColumn(name="interval_id", nullable = false)
+    @JoinColumn(name="inter_interval_id", nullable = false)
     @NotNull
     private InterInterval interInterval;
 

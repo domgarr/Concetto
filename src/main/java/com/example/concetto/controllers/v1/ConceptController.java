@@ -9,7 +9,6 @@ import com.example.concetto.models.User;
 import com.example.concetto.services.*;
 import com.example.concetto.utility.AuthUtility;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -50,7 +49,7 @@ public class ConceptController {
     //TODO: Add error handling
     @GetMapping("user/{id}")
     public ResponseEntity<ConceptDTO> getConceptByUserId(@PathVariable Long id) {
-        return new ResponseEntity<ConceptDTO>(conceptService.findById(id), HttpStatus.OK);
+        return new ResponseEntity<ConceptDTO>(conceptService.findDtoById(id), HttpStatus.OK);
     }
 
     //TODO: Add error handling
@@ -82,7 +81,6 @@ public class ConceptController {
         concept.setUser(user);
         concept.setInterInterval(interInterval);
 
-
         Set<ConstraintViolation<Concept>> constraintViolations = Validation.buildDefaultValidatorFactory().getValidator().validate(concept);
         if (constraintViolations.size() > 0) {
             StringBuilder errorMessage = new StringBuilder();
@@ -97,7 +95,6 @@ public class ConceptController {
             throw new DataIntegrityError(errorMessage.substring(0, errorMessage.length() - 2));
         }
 
-        subjectService.incrementCount(concept.getSubject().getId());
         return new ResponseEntity<Concept>(conceptService.save(concept), HttpStatus.OK);
     }
 }

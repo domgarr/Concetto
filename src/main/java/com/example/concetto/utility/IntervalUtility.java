@@ -9,6 +9,8 @@ public class IntervalUtility {
 
     public static InterInterval calculateNextInterval(int responseRating, InterInterval interInterval){
         int length;
+
+
         if(interInterval.getRepitionCount() == 0){
             length = 0;
         }else if(interInterval.getRepitionCount() == 1){
@@ -21,8 +23,9 @@ public class IntervalUtility {
         }
 
         interInterval.setLength(length);
-        interInterval.setResponseRating(responseRating);
         interInterval.setRepitionCount(interInterval.getRepitionCount() + 1);
+        interInterval.setResponseRating(responseRating);
+
         return interInterval;
     }
 
