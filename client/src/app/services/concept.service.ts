@@ -17,15 +17,8 @@ export class ConceptService {
 
   addConcept(concept : Concept, isDone : boolean) : Observable<Concept> {
     let httpOptions = this.getHttpOptions();
-    let params = {'is_done' : "is_done"};
-
-
     httpOptions.headers.set('observe', 'response');
 
-    if(isDone){
-    httpOptions["params"] = params;
-    }
-    
     return this.http.put<Concept>(this.conceptUrl, concept, this.getHttpOptions());
   }
 

@@ -11,6 +11,8 @@ declare var $: any;
 export class ViewConceptComponent implements OnInit {
   @Input() 
   concept : Concept;
+
+  @Output() incorrectPressed = new EventEmitter<boolean>();
   @Output() goodPressed = new EventEmitter<boolean>();
   @Output() perfectPressed = new EventEmitter<boolean>();
   
@@ -26,6 +28,11 @@ export class ViewConceptComponent implements OnInit {
 
   onClickShow(){
     this.isShowButtonVisible = false;
+  }
+
+  onIncorrectButtonPressed(){
+    this.incorrectPressed.emit();
+    this.hideExplanationAndShowVisibleButton();
   }
 
   onGoodButtonPressed(){
