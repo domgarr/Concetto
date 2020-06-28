@@ -81,6 +81,7 @@ public class ConceptController {
         concept.setUser(user);
         concept.setInterInterval(interInterval);
 
+
         Set<ConstraintViolation<Concept>> constraintViolations = Validation.buildDefaultValidatorFactory().getValidator().validate(concept);
         if (constraintViolations.size() > 0) {
             StringBuilder errorMessage = new StringBuilder();

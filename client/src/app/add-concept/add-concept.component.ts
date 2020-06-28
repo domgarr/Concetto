@@ -62,7 +62,7 @@ export class AddConceptComponent implements OnInit {
       actionMessage = "' has been saved. You may complete it at a later time.";
     }
 
-    this.conceptService.addConcept(this.concept).subscribe((response) =>{
+    this.conceptService.addConcept(this.concept, isDone).subscribe((response) =>{
       this.showMessageContent = "'" + this.concept.name + actionMessage;
       this.showMessage = true;
       this.conceptForm.reset();

@@ -34,7 +34,6 @@ public class Concept {
     @Size(max = 100)
     private String name;
 
-    @NotNull
     @Size(max = 255)
     private String explanation;
 
