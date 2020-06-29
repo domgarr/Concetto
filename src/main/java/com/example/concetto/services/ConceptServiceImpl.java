@@ -92,5 +92,10 @@ public class ConceptServiceImpl implements ConceptService {
         return conceptRepository.findByInterIntervalId(id);
     }
 
+    @Override
+    public Long findUserIdByConceptId(Long id) {
+        return conceptRepository.findUserIdByConceptId(id);
+    }
+
 
 }

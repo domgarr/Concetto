@@ -39,6 +39,6 @@ public class SubjectController {
 
     @GetMapping("/{id}")
     SubjectDTO getSubjectById(@PathVariable Long id){
-        return subjectService.findBYId(id);
+        return subjectService.findById(id);
     }
 }

@@ -61,7 +61,7 @@
           <button id="saveButton" name="saveButton" type="button" [disabled]="!nameInput.valid " (click)="onConceptSubmit(false)" class="btn btn-lg btn-primary ml-2">save</button>
       </div>
       <div *ngIf="updating" class="d-flex justify-content-center mt-3">
-        <button id="doneButton" name="doneButton" type="button" [disabled]="!conceptForm.form.valid" class="btn btn-lg btn-warning mr-2">update</button>
+        <button id="updateButton" name="updateButton" type="button" [disabled]="!conceptForm.form.valid" (click)="onConceptUpdate()" class="btn btn-lg btn-warning mr-2">update</button>
       </div>
   </div>
 </form>

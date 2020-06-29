@@ -91,10 +91,6 @@ perfectProgressAriaValueNow : string;
     this.responseButtonPressed(this.PERFECT_RESPONSE_VALUE);
   }
 
-  onAddButtonPress(){
-    this.router.navigate(['/u/add-concept', this.subject.id]);
-  }
-
   responseButtonPressed(responseValue){
     this.concept.interInterval.responseRating = responseValue;
     this.updateProgressBar();
@@ -184,5 +180,14 @@ perfectProgressAriaValueNow : string;
     this.concepts.forEach((concept)=>{
        concept.interInterval.responseRating = 0;
     });
+  }
+
+  onAddButtonPress(){
+    this.router.navigate(['/u/add-concept', this.subject.id]);
+  }
+
+  onEditButtonPress(){
+    this.router.navigate(['/u/edit', this.concept.id]);
+
   }
 }

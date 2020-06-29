@@ -15,4 +15,5 @@ public interface ConceptService {
     Concept save(Concept concept);
     List<ConceptDTO> findAllConceptsBySubjectIdScheduledForReview(Long id);
     Concept findByInterIntervalId(Long id);
+    Long findUserIdByConceptId(Long id);
 }

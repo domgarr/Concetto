@@ -3,7 +3,7 @@
     <h1 class="display-4 mt-3">{{subject.name || ""}}</h1>
     <div class="mt-3">
         <button type="button" class="btn btn-info mr-2" (click)="onAddButtonPress()">Add</button>
-        <button type="button" class="btn btn-warning">Edit</button>
+        <button type="button" class="btn btn-warning" (click)="onEditButtonPress()">Edit</button>
     </div>
 
     <div class="progress mt-3">
@@ -11,7 +11,7 @@
         <div class="progress-bar " role="progressbar" [style]="goodProgressStyle" aria-valuenow="goodProgressAriaValueNow" aria-valuemin="0" aria-valuemax="100"></div>
         <div class="progress-bar bg-success" role="progressbar" [style]="perfectProgressStyle" aria-valuenow="perfectProgressAriaValueNow" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
-    
+
     <div *ngIf="renderViewConcept; else completion_message">
         <app-view-concept 
             [concept]="concept"

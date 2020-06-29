@@ -21,4 +21,7 @@ public interface ConceptRepository extends JpaRepository<Concept, Long> {
 
     @Query(value="select * from concept as c where c.inter_interval_id = :interIntervalId", nativeQuery = true)
     Concept findByInterIntervalId(@Param("interIntervalId") Long id);
+
+    @Query(value="select user_id from concept where id = :id", nativeQuery = true)
+    Long findUserIdByConceptId(@Param("id")Long id);
 }

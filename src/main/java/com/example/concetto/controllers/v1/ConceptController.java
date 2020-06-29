@@ -2,6 +2,7 @@ package com.example.concetto.controllers.v1;
 
 import com.example.concetto.api.v1.model.ConceptDTO;
 import com.example.concetto.api.v1.model.ConceptListDTO;
+import com.example.concetto.exception.ForbiddenAccessError;
 import com.example.concetto.models.Concept;
 import com.example.concetto.exception.DataIntegrityError;
 import com.example.concetto.models.InterInterval;
@@ -43,12 +44,12 @@ public class ConceptController {
     @GetMapping("/all")
     public ResponseEntity<ConceptListDTO> getAllConcepts(OAuth2Authentication authentication) {
         User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));
-        return new ResponseEntity<ConceptListDTO>(new ConceptListDTO(conceptService.getAllConceptsByUserId(user.getId())), HttpStatus.OK);
+        return new ResponseEntity<>(new ConceptListDTO(conceptService.getAllConceptsByUserId(user.getId())), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ConceptDTO> getConceptById(@PathVariable Long id){
-        return new ResponseEntity<ConceptDTO>(conceptService.findDtoById(id), HttpStatus.OK);
+    public ResponseEntity<ConceptDTO> getConceptDtoById(@PathVariable Long id){
+        return new ResponseEntity<>(conceptService.findDtoById(id), HttpStatus.OK);
     }
 
     //TODO: Add error handling
@@ -56,13 +57,31 @@ public class ConceptController {
     public ResponseEntity<List<ConceptDTO>> getConceptsBySubjectId(@PathVariable Long id, @RequestParam(value = "is_scheduled", required = false, defaultValue = "false") boolean scheduled) {
         if(scheduled){
             //Return Concepts that are ready to be reviewed.
-            return new ResponseEntity<List<ConceptDTO>>(conceptService.findAllConceptsBySubjectIdScheduledForReview(id), HttpStatus.OK);
+            return new ResponseEntity<>(conceptService.findAllConceptsBySubjectIdScheduledForReview(id), HttpStatus.OK);
         }else{
-            return new ResponseEntity<List<ConceptDTO>>(conceptService.findAllConceptsBySubjectId(id), HttpStatus.OK);
+            return new ResponseEntity<>(conceptService.findAllConceptsBySubjectId(id), HttpStatus.OK);
         }
     }
 
+    @Transactional
+    @PatchMapping
+    public ResponseEntity<Concept> updateConcept(@RequestBody Concept concept, OAuth2Authentication authentication){
+        User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));
+        Long userIdFromConcept = conceptService.findUserIdByConceptId(concept.getId());
+        if(user.getId() == userIdFromConcept){
+            validateConcept(concept);
+            //Todo: extract into a method.
+            Concept existingConcept = conceptService.findById(concept.getId());
+            existingConcept.setName(concept.getName());
+            existingConcept.setExplanation(concept.getExplanation());
+            existingConcept.setReviewed(concept.isReviewed());
+            existingConcept.setSimplified(concept.isSimplified());
 
+            return new ResponseEntity<>(conceptService.save(existingConcept), HttpStatus.OK);
+        }else{
+            throw new ForbiddenAccessError("Forbidden action. The resource acted upon does not belong to the user.");
+        }
+    }
 
     @Transactional
     @PutMapping
@@ -73,7 +92,12 @@ public class ConceptController {
         concept.setUser(user);
         concept.setInterInterval(interInterval);
 
+        validateConcept(concept);
+        //TODO: Re-think if ConceptDTO should be returned instead of the concept.
+        return new ResponseEntity<>(conceptService.save(concept), HttpStatus.OK);
+    }
 
+    private void validateConcept(Concept concept) {
         Set<ConstraintViolation<Concept>> constraintViolations = Validation.buildDefaultValidatorFactory().getValidator().validate(concept);
         if (constraintViolations.size() > 0) {
             StringBuilder errorMessage = new StringBuilder();
@@ -87,7 +111,5 @@ public class ConceptController {
             //The use of substring to to remove the space from the last error message that is appended.
             throw new DataIntegrityError(errorMessage.substring(0, errorMessage.length() - 2));
         }
-
-        return new ResponseEntity<Concept>(conceptService.save(concept), HttpStatus.OK);
     }
 }

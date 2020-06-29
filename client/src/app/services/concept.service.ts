@@ -21,6 +21,12 @@ export class ConceptService {
     return this.http.put<Concept>(this.BASE_CONCEPT_URL, concept, this.getHttpOptions());
   }
 
+  updateConcept(concept : Concept){
+    let httpOptions = this.getHttpOptions();
+    httpOptions.headers.set('observe', 'response');
+    return this.http.patch<Concept>(this.BASE_CONCEPT_URL, concept, this.getHttpOptions());
+  }
+
   getConceptById(id : number) : Observable<Concept> {
     return this.http.get<Concept>(this.BASE_CONCEPT_URL + id, this.getHttpOptions());
   }

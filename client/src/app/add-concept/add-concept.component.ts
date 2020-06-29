@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Concept } from '../models/concept';
 import { Subject } from '../models/subject';
 import { ConceptService } from '../services/concept.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { SubjectService } from '../services/subject.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class AddConceptComponent implements OnInit {
   showMessage : boolean = false;
   showMessageContent : string = "test";
 
-  constructor(private conceptService : ConceptService, private subjectService : SubjectService, private activatedRoute : ActivatedRoute, private cdr : ChangeDetectorRef) { 
+  constructor(private conceptService : ConceptService, private subjectService : SubjectService, private activatedRoute : ActivatedRoute, private cdr : ChangeDetectorRef, private router : Router) { 
     this.concept = new Concept();
     this.concept.subject = new Subject(); //Prevent error upon first render.
     
@@ -49,6 +49,7 @@ export class AddConceptComponent implements OnInit {
          if(params.has("subject_id")){
           let subjectId : string = params.get("subject_id");
           this.setSubjectSelectedTrue(subjectId);
+          this.adding = true;
          }else if(params.has("concept_id")){
            let conceptId : string = params.get("concept_id");
            this.conceptService.getConceptById(Number(conceptId)).subscribe(concept =>{
@@ -59,6 +60,7 @@ export class AddConceptComponent implements OnInit {
            subjects[0].selected = true;
            this.concept.subject = {...subjects[0]};
            this.selectedSubject = {...subjects[0]};
+           this.adding = true;
          }
       });
   });
@@ -91,6 +93,13 @@ export class AddConceptComponent implements OnInit {
     },
     err =>{
       console.log(err);
+    });
+  }
+
+  onConceptUpdate(){
+    this.conceptService.updateConcept(this.concept).subscribe( (updatedConcept : Concept) =>{
+      console.log(updatedConcept);
+      this.router.navigate(['/u/study', updatedConcept.subject.id]);
     });
   }
 

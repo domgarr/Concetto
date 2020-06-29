@@ -38,7 +38,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public SubjectDTO findBYId(Long id) {
+    public SubjectDTO findById(Long id) {
         Optional<Subject> subjectOptional = subjectRepository.findById(id);
         if(!subjectOptional.isPresent()){
             throw new NotFoundException("Subject not found.");

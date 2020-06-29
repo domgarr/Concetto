@@ -17,17 +17,14 @@ public class Concept {
 
     @ManyToOne()
     @JoinColumn(name="user_id", nullable = false)
-    @NotNull
     private User user;
 
     @ManyToOne()
     @JoinColumn(name="subject_id", nullable = false)
-    @NotNull
     private Subject subject;
 
     @OneToOne()
     @JoinColumn(name="inter_interval_id", nullable = false)
-    @NotNull
     private InterInterval interInterval;
 
     @NotBlank
