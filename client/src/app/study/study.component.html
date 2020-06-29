@@ -3,7 +3,7 @@
     <h1 class="display-4 mt-3">{{subject.name || ""}}</h1>
     <div class="mt-3">
         <button type="button" class="btn btn-info mr-2" (click)="onAddButtonPress()">Add</button>
-        <button type="button" class="btn btn-warning" (click)="onEditButtonPress()">Edit</button>
+        <button type="button" class="btn btn-warning" (click)="onEditButtonPress()" [disabled]="!renderViewConcept">Edit</button>
     </div>
 
     <div class="progress mt-3">
