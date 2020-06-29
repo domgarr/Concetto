@@ -187,7 +187,7 @@ it('SimplifiedCheckBox is required for enabling the done button', ()=>{
   expect(simplifiedCheckbox.checked).toBe(false);
   //Expect saveButton to still be disabled.
   expect(doneButton.disabled).toBe(true);
-})
+});
 
 it('ReviewedCheckBox is required for enabling the done button.', ()=>{
   let doneButton : HTMLButtonElement = fixture.nativeElement.querySelector("#doneButton");
@@ -220,6 +220,6 @@ it('ReviewedCheckBox is required for enabling the done button.', ()=>{
   expect(simplifiedCheckbox.checked).toBe(true);
   //Expect saveButton to still be disabled.
   expect(doneButton.disabled).toBe(true);
-})
+});
 
 });

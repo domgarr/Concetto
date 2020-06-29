@@ -19,6 +19,7 @@ const routes: Routes = [
     children: [
         {path: 'add-concept', component: AddConceptComponent},
         {path: 'add-concept/:subject_id', component: AddConceptComponent},
+        {path: 'edit/:concept_id', component: AddConceptComponent},
         {path: 'study/:subject_id', component: StudyComponent},
         {path: 'view-subject', component: ViewSubjectComponent},
 

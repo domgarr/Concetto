@@ -157,7 +157,6 @@ perfectProgressAriaValueNow : string;
   }
 
   updateProgressCounter(responseValue){
-    console.log(responseValue);
     switch(responseValue){
       case this.INCORRECT_RESPONSE_VALUE:
         this.incorrect++;
@@ -184,8 +183,6 @@ perfectProgressAriaValueNow : string;
   resetResponseRating(){
     this.concepts.forEach((concept)=>{
        concept.interInterval.responseRating = 0;
-    })
+    });
   }
-
-
 }

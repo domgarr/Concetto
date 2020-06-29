@@ -7,6 +7,7 @@ import com.example.concetto.models.Concept;
 import com.example.concetto.repositories.ConceptRepository;
 import com.example.concetto.services.ConceptService;
 import com.example.concetto.services.ConceptServiceImpl;
+import org.assertj.core.api.OptionalAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -60,5 +61,18 @@ public class ConceptServiceTest {
         assertTrue(thrown.getMessage().contains("Concept not found."));
     }
 
+    @Test
+    public void findDtoById_FindCreatedConceptUsingId_ShouldReturnANonNullObject(){
+        Concept concept = new Concept();
+        concept.setId(1L);
+        concept.setName("Blah");
+
+        Optional<Concept> optionalConcept = Optional.of(concept);
+
+
+        when(conceptRepository.findById(1L)).thenReturn(optionalConcept);
+        assertNotNull(conceptService.findDtoById(1L));
+
+    }
 
 }

@@ -18,6 +18,8 @@ export class AddConceptComponent implements OnInit {
   subjects : Subject[];
   
   error : boolean;
+  adding : boolean;
+  updating : boolean;
 
   @ViewChild('conceptForm') conceptForm: any;
 
@@ -34,7 +36,10 @@ export class AddConceptComponent implements OnInit {
   constructor(private conceptService : ConceptService, private subjectService : SubjectService, private activatedRoute : ActivatedRoute, private cdr : ChangeDetectorRef) { 
     this.concept = new Concept();
     this.concept.subject = new Subject(); //Prevent error upon first render.
+    
     this.error = false;
+    this.adding = false;
+    this.updating = false;
   }
 
   ngOnInit() {
@@ -44,6 +49,12 @@ export class AddConceptComponent implements OnInit {
          if(params.has("subject_id")){
           let subjectId : string = params.get("subject_id");
           this.setSubjectSelectedTrue(subjectId);
+         }else if(params.has("concept_id")){
+           let conceptId : string = params.get("concept_id");
+           this.conceptService.getConceptById(Number(conceptId)).subscribe(concept =>{
+           this.concept = concept;
+           this.updating = true;
+           });
          }else{
            subjects[0].selected = true;
            this.concept.subject = {...subjects[0]};

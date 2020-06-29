@@ -7,10 +7,9 @@ import {Observable, of} from 'rxjs';
   providedIn: 'root'
 })
 export class ConceptService {
-  private readonly conceptUrl = "/proxy/api/v1/concept";
-  private readonly getAllConceptsUrl = "/proxy/api/v1/concept/all";
-  private readonly GET_ALL_CONCEPTS_BY_SUBJECT_ID = "/proxy/api/v1/concept/subject/";
-  
+  private readonly BASE_CONCEPT_URL = "/proxy/api/v1/concept/";
+  private readonly getAllConceptsUrl = this.BASE_CONCEPT_URL + "all";
+  private readonly GET_ALL_CONCEPTS_BY_SUBJECT_ID = this.BASE_CONCEPT_URL + "subject/";
   private readonly SCHEDULED_PARAMETER : string = "is_scheduled";
 
   constructor(private http : HttpClient) { }
@@ -19,7 +18,11 @@ export class ConceptService {
     let httpOptions = this.getHttpOptions();
     httpOptions.headers.set('observe', 'response');
 
-    return this.http.put<Concept>(this.conceptUrl, concept, this.getHttpOptions());
+    return this.http.put<Concept>(this.BASE_CONCEPT_URL, concept, this.getHttpOptions());
+  }
+
+  getConceptById(id : number) : Observable<Concept> {
+    return this.http.get<Concept>(this.BASE_CONCEPT_URL + id, this.getHttpOptions());
   }
 
   getConcepts() : Observable<Concept[]> {
@@ -43,9 +46,4 @@ export class ConceptService {
     };
     return httpOptions;
   }
-
-  
-
-
-
 }

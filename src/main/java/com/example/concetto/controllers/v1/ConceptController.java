@@ -46,9 +46,8 @@ public class ConceptController {
         return new ResponseEntity<ConceptListDTO>(new ConceptListDTO(conceptService.getAllConceptsByUserId(user.getId())), HttpStatus.OK);
     }
 
-    //TODO: Add error handling
-    @GetMapping("user/{id}")
-    public ResponseEntity<ConceptDTO> getConceptByUserId(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ConceptDTO> getConceptById(@PathVariable Long id){
         return new ResponseEntity<ConceptDTO>(conceptService.findDtoById(id), HttpStatus.OK);
     }
 
@@ -63,14 +62,7 @@ public class ConceptController {
         }
     }
 
-    @PostMapping("/reviewed")
-    public ResponseEntity<String> conceptReviewed(@PathVariable Long id){
-        //TODO: Ensure the user owns the Concept.
 
-        //TODO: Calculate next review date using Fibonacci sequence.
-
-        return null;
-    }
 
     @Transactional
     @PutMapping

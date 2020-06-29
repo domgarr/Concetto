@@ -1,6 +1,7 @@
 package com.example.concetto.api.v1.model;
 
 import com.example.concetto.models.InterInterval;
+import com.example.concetto.models.Subject;
 import com.example.concetto.models.User;
 import lombok.Data;
 
@@ -18,11 +19,11 @@ import java.util.Date;
 public class ConceptDTO {
     private Long id;
     private InterInterval interInterval;
+    private Subject subject;
     private String name;
     private String explanation;
     private boolean reviewed;
     private boolean simplified;
     private Date dateCreated;
     private Date dateLastReviewed;
-
 }
