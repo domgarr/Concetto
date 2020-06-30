@@ -23,6 +23,7 @@ export class AddSubjectComponent implements OnInit {
   onSaveSubject(){
     this.subjectService.saveSubject(this.subject).subscribe( subject =>{
       this.subjectSaved.emit(subject); 
+      this.subject = new Subject();
     });
   }
 }

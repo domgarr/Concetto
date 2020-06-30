@@ -7,9 +7,9 @@
     </div>
 
     <div class="progress mt-3">
-        <div class="progress-bar bg-secondary" role="progressbar" [style]="incorrectProgressStyle" [aria-valuenow]="incorrectProgressAriaValueNow" aria-valuemin="0" aria-valuemax="100"></div>
-        <div class="progress-bar " role="progressbar" [style]="goodProgressStyle" aria-valuenow="goodProgressAriaValueNow" aria-valuemin="0" aria-valuemax="100"></div>
-        <div class="progress-bar bg-success" role="progressbar" [style]="perfectProgressStyle" aria-valuenow="perfectProgressAriaValueNow" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar bg-secondary" role="progressbar" [style]="incorrectProgressStyle" attr.aria-valuenow="{{incorrectProgressAriaValueNow}}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar " role="progressbar" [style]="goodProgressStyle" attr.aria-valuenow="{{goodProgressAriaValueNow}}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar bg-success" role="progressbar" [style]="perfectProgressStyle" attr.aria-valuenow="{{perfectProgressAriaValueNow}}" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
 
     <div *ngIf="renderViewConcept; else completion_message">

@@ -1,6 +1,6 @@
 <form  #subjectForm="ngForm">
 <div class="input-group mb-3 mt-3">
-    <input #nameInput = "ngModel" [(ngModel)]="subject.name" id="nameInput" name="nameInput" type="text" class="form-control" placeholder="Rocket Engines" >
+    <input #nameInput = "ngModel" [(ngModel)]="subject.name" id="nameInput" name="nameInput" type="text" class="form-control">
     <div class="input-group-append">
       <button class="btn btn-outline-secondary"  type="button" (click)="onSaveSubject()">Add</button>
     </div>
