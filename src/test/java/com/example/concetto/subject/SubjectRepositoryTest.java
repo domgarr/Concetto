@@ -3,7 +3,6 @@ package com.example.concetto.subject;
 import com.example.concetto.api.v1.mapper.SubjectMapper;
 import com.example.concetto.api.v1.mapper.UserMapper;
 import com.example.concetto.api.v1.model.SubjectDTO;
-import com.example.concetto.exception.NotFoundException;
 import com.example.concetto.models.Subject;
 import com.example.concetto.models.User;
 import com.example.concetto.repositories.SubjectRepository;
@@ -12,7 +11,6 @@ import com.example.concetto.services.SubjectService;
 import com.example.concetto.services.SubjectServiceImpl;
 import com.example.concetto.services.UserService;
 import com.example.concetto.services.UserServiceImpl;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +57,7 @@ public class SubjectRepositoryTest {
         User savedUser = userService.save(user);
         SubjectDTO savedSubject = subjectService.save(subject);
 
-        List<SubjectDTO> subjectDtoList = subjectService.findAllByUserId(savedUser.getId());
+        List<SubjectDTO> subjectDtoList = subjectService.findAllDtoByUserId(savedUser.getId());
         assertEquals(1, subjectDtoList.size());
     }
 

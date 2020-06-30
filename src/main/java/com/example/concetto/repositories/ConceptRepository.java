@@ -24,4 +24,7 @@ public interface ConceptRepository extends JpaRepository<Concept, Long> {
 
     @Query(value="select user_id from concept where id = :id", nativeQuery = true)
     Long findUserIdByConceptId(@Param("id")Long id);
+
+    @Query(value="select count(*) from concept where subject_id = :subjectId AND  datediff(curdate(), next_review_date) >= 0", nativeQuery = true)
+    Integer reviewCountBySubjectId(@Param("subjectId") Long subjectId);
 }

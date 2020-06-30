@@ -97,5 +97,10 @@ public class ConceptServiceImpl implements ConceptService {
         return conceptRepository.findUserIdByConceptId(id);
     }
 
+    @Override
+    public Integer reviewCountBySubjectId(Long subjectId) {
+        return conceptRepository.reviewCountBySubjectId(subjectId);
+    }
+
 
 }

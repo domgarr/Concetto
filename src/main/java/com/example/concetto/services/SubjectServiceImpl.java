@@ -31,10 +31,15 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<SubjectDTO> findAllByUserId(Long id) {
+    public List<SubjectDTO> findAllDtoByUserId(Long id) {
         return subjectRepository.findAllSubjectByUserId(id).stream()
                 .map(subjectMapper :: subjectToSubjectDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Subject> findAllByUserId(Long id) {
+        return subjectRepository.findAllSubjectByUserId(id);
     }
 
     @Override
@@ -58,6 +63,16 @@ public class SubjectServiceImpl implements SubjectService {
             throw new NotFoundException("Subject with the given id does not exist.");
         }
         return fetchedId;
+    }
+
+    @Override
+    public List<Subject> findAllWhereLastUpdateIsInPast(Long userId) {
+        return subjectRepository.findAllWhereLastUpdateIsInPast(userId);
+    }
+
+    @Override
+    public List<Subject> saveAll(List<Subject> subjects) {
+        return subjectRepository.saveAll(subjects);
     }
 
 }

@@ -19,4 +19,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     @Query(value="select user_id from subject where id = :id", nativeQuery = true)
     Long findUserIdById(@Param("id") Long id);
+
+    @Query(value="select * from subject where datediff(curdate(), last_update) > 0 AND user_id = :userId", nativeQuery = true)
+    List<Subject> findAllWhereLastUpdateIsInPast(@Param("userId") Long userId);
 }
