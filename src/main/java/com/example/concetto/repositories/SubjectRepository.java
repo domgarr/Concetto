@@ -17,9 +17,19 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     @Query(value = "update subject s set s.count = s.count + 1 where id = :id", nativeQuery = true)
     int incrementCount(@Param("id") Long id);
 
+    @Modifying
+    @Query(value = "update subject s set s.review_count = s.review_count + 1 where id = :id", nativeQuery = true)
+    int incrementReviewCount(@Param("id") Long id);
+
+    @Modifying
+    @Query(value = "update subject s set s.review_count = s.review_count - 1 where id = :id", nativeQuery = true)
+    int decrementReviewCount(@Param("id") Long id);
+
     @Query(value="select user_id from subject where id = :id", nativeQuery = true)
     Long findUserIdById(@Param("id") Long id);
 
     @Query(value="select * from subject where datediff(curdate(), last_update) > 0 AND user_id = :userId", nativeQuery = true)
     List<Subject> findAllWhereLastUpdateIsInPast(@Param("userId") Long userId);
+
+
 }

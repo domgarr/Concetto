@@ -102,5 +102,10 @@ public class ConceptServiceImpl implements ConceptService {
         return conceptRepository.reviewCountBySubjectId(subjectId);
     }
 
+    @Override
+    public Long findSubjectIdByInterIntervalId(Long interIntervalId) {
+        return conceptRepository.findSubjectIdByInterIntervalId(interIntervalId);
+    }
+
 
 }

@@ -57,6 +57,16 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public int incrementReviewCount(Long id) {
+        return subjectRepository.incrementReviewCount(id);
+    }
+
+    @Override
+    public int decrementReviewCount(Long id) {
+        return subjectRepository.decrementReviewCount(id);
+    }
+
+    @Override
     public Long findUserIdById(Long id) {
         Long fetchedId = subjectRepository.findUserIdById(id);
         if(fetchedId == null){

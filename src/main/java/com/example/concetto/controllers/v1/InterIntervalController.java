@@ -2,8 +2,10 @@ package com.example.concetto.controllers.v1;
 
 import com.example.concetto.models.Concept;
 import com.example.concetto.models.InterInterval;
+import com.example.concetto.models.Subject;
 import com.example.concetto.services.ConceptService;
 import com.example.concetto.services.InterIntervalService;
+import com.example.concetto.services.SubjectService;
 import com.example.concetto.utility.IntervalUtility;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +18,12 @@ import java.util.Date;
 public class InterIntervalController {
     private final InterIntervalService interIntervalService;
     private final ConceptService conceptService;
+    private final SubjectService subjectService;
 
-    public InterIntervalController(InterIntervalService interIntervalService, ConceptService conceptService) {
+    public InterIntervalController(InterIntervalService interIntervalService, ConceptService conceptService, SubjectService subjectService) {
         this.interIntervalService = interIntervalService;
         this.conceptService = conceptService;
+        this.subjectService = subjectService;
     }
 
     //TODO: Return a InterIntervalDTO.
@@ -37,6 +41,9 @@ public class InterIntervalController {
         cal.add(Calendar.DATE, updatedInterInterval.getLength());
         fetchedConcept.setNextReviewDate(cal.getTime());
         conceptService.save(fetchedConcept);
+
+        Long subjectId = conceptService.findSubjectIdByInterIntervalId(updatedInterInterval.getId());
+        subjectService.decrementReviewCount(subjectId);
 
         return interIntervalService.save(updatedInterInterval);
     }

@@ -18,4 +18,5 @@ public interface ConceptService {
     Concept findByInterIntervalId(Long id);
     Long findUserIdByConceptId(Long id);
     Integer reviewCountBySubjectId(Long subjectId);
+    Long findSubjectIdByInterIntervalId(Long interIntervalId);
 }
