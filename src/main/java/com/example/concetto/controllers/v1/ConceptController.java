@@ -31,19 +31,21 @@ public class ConceptController {
     private final UserService userService;
     private final SubjectService subjectService;
     private final InterIntervalService interIntervalService;
+    private final AuthUtility authUtility;
 
 
-    public ConceptController(ConceptService conceptService, UserService userService, SubjectService subjectService, InterIntervalService interIntervalService) {
+    public ConceptController(ConceptService conceptService, UserService userService, SubjectService subjectService, InterIntervalService interIntervalService, AuthUtility authUtility) {
         this.conceptService = conceptService;
         this.userService = userService;
         this.subjectService = subjectService;
         this.interIntervalService = interIntervalService;
+        this.authUtility = authUtility;
     }
 
     //TODO: Add error handling
     @GetMapping("/all")
     public ResponseEntity<ConceptListDTO> getAllConcepts(OAuth2Authentication authentication) {
-        User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));
+        User user = userService.getUserByEmail(authUtility.getEmail(authentication));
         return new ResponseEntity<>(new ConceptListDTO(conceptService.getAllConceptsByUserId(user.getId())), HttpStatus.OK);
     }
 
@@ -66,7 +68,7 @@ public class ConceptController {
     @Transactional
     @PatchMapping
     public ResponseEntity<Concept> updateConcept(@RequestBody Concept concept, OAuth2Authentication authentication){
-        User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));
+        User user = userService.getUserByEmail(authUtility.getEmail(authentication));
         Long userIdFromConcept = conceptService.findUserIdByConceptId(concept.getId());
         if(user.getId() == userIdFromConcept){
             validateConcept(concept);
@@ -86,15 +88,26 @@ public class ConceptController {
     @Transactional
     @PutMapping
     public ResponseEntity<Concept> saveConcept(@RequestBody Concept concept, OAuth2Authentication authentication) {
-        User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));
+
+        User user = userService.getUserByEmail(authUtility.getEmail(authentication));
+        Long subjectUserId = subjectService.findUserIdById(concept.getSubject().getId());
+
+        if(user.getId() != subjectUserId){
+            throw new ForbiddenAccessError("The user does not have ownership of the given subject");
+        }
+
         InterInterval interInterval = interIntervalService.save(new InterInterval());
 
         concept.setUser(user);
         concept.setInterInterval(interInterval);
 
         validateConcept(concept);
+
+        Concept savedConcept = conceptService.save(concept);
+        subjectService.incrementCount(concept.getSubject().getId());
+
         //TODO: Re-think if ConceptDTO should be returned instead of the concept.
-        return new ResponseEntity<>(conceptService.save(concept), HttpStatus.OK);
+        return new ResponseEntity<>(savedConcept, HttpStatus.OK);
     }
 
     private void validateConcept(Concept concept) {
@@ -112,4 +125,5 @@ public class ConceptController {
             throw new DataIntegrityError(errorMessage.substring(0, errorMessage.length() - 2));
         }
     }
+
 }

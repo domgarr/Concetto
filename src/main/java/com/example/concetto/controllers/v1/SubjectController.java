@@ -16,15 +16,17 @@ import java.util.List;
 public class SubjectController {
     SubjectService subjectService;
     UserService userService;
+    AuthUtility authUtility;
 
-    public SubjectController(SubjectService subjectService, UserService userService) {
+    public SubjectController(SubjectService subjectService, UserService userService, AuthUtility authUtility) {
         this.subjectService = subjectService;
         this.userService = userService;
+        this.authUtility = authUtility;
     }
 
     @PutMapping
     public SubjectDTO saveSubject(@RequestBody Subject subject, OAuth2Authentication authentication){
-        User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));
+        User user = userService.getUserByEmail(authUtility.getEmail(authentication));
         subject.setUser(user);
         SubjectDTO savedSubjectDTO = subjectService.save(subject);
         return savedSubjectDTO;
@@ -32,7 +34,7 @@ public class SubjectController {
 
     @GetMapping("/all")
     List<SubjectDTO> getAllSubjectsByUserId(OAuth2Authentication authentication){
-        User user = userService.getUserByEmail(AuthUtility.getEmail(authentication));
+        User user = userService.getUserByEmail(authUtility.getEmail(authentication));
         List<SubjectDTO> subjects = subjectService.findAllByUserId(user.getId());
         return subjects;
     }

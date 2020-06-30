@@ -43,8 +43,6 @@ public class UserServiceImpl implements UserService {
         return user.map(userMapper::userToUserDTO).get();
     }
 
-
-
     @Override
     public User save(User user) {
         return userRepository.save(user);

@@ -51,4 +51,13 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectRepository.incrementCount(id);
     }
 
+    @Override
+    public Long findUserIdById(Long id) {
+        Long fetchedId = subjectRepository.findUserIdById(id);
+        if(fetchedId == null){
+            throw new NotFoundException("Subject with the given id does not exist.");
+        }
+        return fetchedId;
+    }
+
 }

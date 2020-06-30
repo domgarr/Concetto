@@ -19,10 +19,12 @@ import java.util.HashMap;
 public class UserController {
     private final UserService userService;
     private final SubjectService subjectService;
+    private final AuthUtility authUtility;
 
-    public UserController(UserService userService, SubjectService subjectService) {
+    public UserController(UserService userService, SubjectService subjectService, AuthUtility authUtility) {
         this.userService = userService;
         this.subjectService = subjectService;
+        this.authUtility = authUtility;
     }
 
     //https://spring.io/guides/tutorials/spring-boot-oauth2/
@@ -30,7 +32,7 @@ public class UserController {
     public HashMap<String, String> user(OAuth2Authentication authentication) {
         String successMessage = "Successful authentication.";
 
-        String email = AuthUtility.getEmail(authentication);
+        String email = authUtility.getEmail(authentication);
         if (userService.createUserIfNotFound(email)) {
             successMessage = "Account created. ".concat(successMessage);
             /* When a user is first created. Add a default subject to the new user's account;
@@ -39,7 +41,7 @@ public class UserController {
              */
             Subject subject = new Subject();
             subject.setName("Default");
-            subject.setUser(userService.getUserByEmail(AuthUtility.getEmail(authentication)));
+            subject.setUser(userService.getUserByEmail(authUtility.getEmail(authentication)));
             subjectService.save(subject);
         }
         //Return a json containing a field

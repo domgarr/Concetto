@@ -3,8 +3,12 @@ package com.example.concetto;
 import com.example.concetto.controllers.v1.ConceptController;
 import com.example.concetto.exception.NotFoundException;
 import com.example.concetto.models.Concept;
+import com.example.concetto.models.Subject;
 import com.example.concetto.models.User;
 import com.example.concetto.services.ConceptService;
+import com.example.concetto.services.SubjectService;
+import com.example.concetto.services.UserService;
+import com.example.concetto.utility.AuthUtility;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ConceptControllerTest {
     @Mock
     ConceptService conceptService;
+    @Mock
+    SubjectService subjectService;
+    @Mock
+    UserService userService;
+    @Mock
+    AuthUtility authUtility;
 
     @InjectMocks
     private ConceptController conceptController;
@@ -46,17 +56,7 @@ public class ConceptControllerTest {
 
         when(conceptService.findDtoById(anyLong())).thenThrow(NotFoundException.class);
 
-        mockMvc.perform(get("/api/v1/concepts/user/4")).andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void getConceptByUserId_GivenAStringUserId_ShouldThrowNumberFormatException() throws Exception {
-        Concept concept = new Concept();
-        concept.setId(1L);
-
-        // when(conceptService.findById(anyLong())).thenThrow(NotFoundException.class);
-
-        mockMvc.perform(get("/api/v1/concepts/user/asdf")).andExpect(status().isBadRequest());
+        mockMvc.perform(get("/api/v1/concept/user/4")).andExpect(status().isNotFound());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class ConceptControllerTest {
         Gson gson = new Gson();
 
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/api/v1/concepts")
+                .put("/api/v1/concept")
                 .content(gson.toJson(concept))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -93,7 +93,7 @@ public class ConceptControllerTest {
         Gson gson = new Gson();
 
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/api/v1/concepts")
+                .put("/api/v1/concept")
                 .content(gson.toJson(concept))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -112,7 +112,7 @@ public class ConceptControllerTest {
         Gson gson = new Gson();
 
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/api/v1/concepts")
+                .put("/api/v1/concept")
                 .content(gson.toJson(concept))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -127,7 +127,7 @@ public class ConceptControllerTest {
         Gson gson = new Gson();
 
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/api/v1/concepts")
+                .put("/api/v1/concept")
                 .content(gson.toJson(concept))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -142,11 +142,46 @@ public class ConceptControllerTest {
         Gson gson = new Gson();
 
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/api/v1/concepts")
+                .put("/api/v1/concept")
                 .content(gson.toJson(concept))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void saveConcept_ConceptWithSubjectIdNotOwned_ShouldThrowForbiddenAccessError() throws Exception{
+        Concept concept = new Concept();
+        concept.setName("Test");
+        concept.setDateCreated(null);
+        concept.setNextReviewDate(null);
+
+        Subject subject = new Subject();
+        subject.setId(1L);
+        subject.setLastUpdate(null);
+
+        concept.setSubject(subject);
+
+
+        Long ownedId = 1L;
+        User user = new User();
+        user.setId(ownedId);
+
+        Long notOwnedId = 2L;
+
+        when(authUtility.getEmail(null)).thenReturn(null);
+        when(userService.getUserByEmail(null)).thenReturn(user);
+        when(subjectService.findUserIdById(1L)).thenReturn(notOwnedId);
+
+        Gson gson = new Gson();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/api/v1/concept")
+                .content(gson.toJson(concept))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+
     }
 
 }
