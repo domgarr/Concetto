@@ -70,7 +70,7 @@ export class AddConceptComponent implements OnInit {
   onConceptSubmit(isDone : boolean){
     let actionMessage : string;
     if(isDone){
-      actionMessage = "'" + this.concept.name + "' is chuncked. Make sure to review regularly.";
+      actionMessage = "' has been chunked. Make sure to review regularly.";
     }else{
       actionMessage = "' has been saved. You may complete it at a later time.";
     }
