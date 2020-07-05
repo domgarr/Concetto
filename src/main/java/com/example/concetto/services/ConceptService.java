@@ -4,6 +4,7 @@ import com.example.concetto.api.v1.model.ConceptDTO;
 import com.example.concetto.models.Concept;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -19,4 +20,5 @@ public interface ConceptService {
     Long findUserIdByConceptId(Long id);
     Integer reviewCountBySubjectId(Long subjectId);
     Long findSubjectIdByInterIntervalId(Long interIntervalId);
+    Date findMostRecentNextReviewDate(Long subjectId);
 }

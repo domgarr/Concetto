@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
@@ -31,5 +32,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     @Query(value="select * from subject where datediff(curdate(), last_update) > 0 AND user_id = :userId", nativeQuery = true)
     List<Subject> findAllWhereLastUpdateIsInPast(@Param("userId") Long userId);
 
-
+    @Modifying
+    @Query(value ="update subject s set s.next_review_date = (select next_review_date from concept where subject_id = :subjectId order by next_review_date asc limit 1)", nativeQuery = true)
+    Integer updateNextReviewDateFromMostRecentConcept(@Param("subjectId") Long subjectId);
 }

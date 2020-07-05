@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Subject} from '../models/subject';
 import { SubjectService } from '../services/subject.service';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ViewSubjectComponent implements OnInit {
 
-  constructor(private subjectService : SubjectService, private router : Router) { }
+  constructor(private subjectService : SubjectService, private router : Router, public datePipe: DatePipe) { }
 
   subjects : Subject[];
 

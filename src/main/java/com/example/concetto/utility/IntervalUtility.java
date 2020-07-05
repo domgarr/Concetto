@@ -10,10 +10,9 @@ public class IntervalUtility {
     public static InterInterval calculateNextInterval(int responseRating, InterInterval interInterval){
         int length;
 
-
         if(interInterval.getRepitionCount() == 0){
             length = 0;
-        }else if(interInterval.getRepitionCount() == 1){
+        } if(interInterval.getRepitionCount() == 1){
             length = 1;
         }else if(interInterval.getRepitionCount() == 2){
             length = 6;

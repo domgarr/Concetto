@@ -3,4 +3,5 @@ export class Subject {
     name: string;
     reviewCount : Number;
     selected : boolean;
+    nextReviewDate : Date;
 }

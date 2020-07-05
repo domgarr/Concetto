@@ -4,6 +4,7 @@ import com.example.concetto.api.v1.model.SubjectDTO;
 import com.example.concetto.models.Subject;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SubjectService {
@@ -17,5 +18,6 @@ public interface SubjectService {
     Long findUserIdById(Long id);
     List<Subject> findAllWhereLastUpdateIsInPast(Long userId);
     List<Subject> saveAll(List<Subject> subjects);
+    Integer updateNextReviewDateFromMostRecentConcept(Long subjectId);
 
 }

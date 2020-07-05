@@ -23,7 +23,7 @@
     <div >
         <ng-template #completion_message>
             <p class="lead text-center mt-3">Great work!</p>
-            <p class="lead text-center">Next review date: </p>
+            <p class="lead text-center">Next review date: {{datePipe.transform(subject.nextReviewDate,'MMM dd, yyyy')}}</p>
         </ng-template>
     </div>
 

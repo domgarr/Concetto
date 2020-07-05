@@ -14,9 +14,7 @@ import { AppRoutingModule }        from './app-routing.module';
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { UserModule } from './user/user.module';
-import { ViewConceptComponent } from './view-concept/view-concept.component';
-import { ViewSubjectComponent } from './view-subject/view-subject.component';
-import { StudyComponent } from './study/study.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -33,7 +31,7 @@ import { StudyComponent } from './study/study.component';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

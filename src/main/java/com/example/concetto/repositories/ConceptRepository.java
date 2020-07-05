@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 //https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.repositories.html
@@ -16,7 +17,7 @@ public interface ConceptRepository extends JpaRepository<Concept, Long> {
     @Query(value="select * from concept c where c.subject_id = :subjectId", nativeQuery=true)
     List<Concept> findALlBySubjectId(@Param("subjectId") Long id);
 
-    @Query(value="select c.* from concept as c join subject as s ON c.subject_id = s.id where datediff(curdate(), next_review_date) >= 0 AND c.subject_id = :subjectId", nativeQuery = true)
+    @Query(value="select c.* from concept as c join subject as s ON c.subject_id = s.id where datediff(curdate(), c.next_review_date) >= 0 AND c.subject_id = :subjectId", nativeQuery = true)
     List<Concept> findAllBySubjectIdThatAreScheduledForReview(@Param("subjectId") Long id);
 
     @Query(value="select * from concept as c where c.inter_interval_id = :interIntervalId", nativeQuery = true)
@@ -30,4 +31,9 @@ public interface ConceptRepository extends JpaRepository<Concept, Long> {
 
     @Query(value="select subject_id from concept where inter_interval_id = :interIntervalId", nativeQuery = true)
     Long findSubjectIdByInterIntervalId(@Param("interIntervalId") Long interIntervalId);
+
+    @Query(value ="select next_review_date from concept where subject_id = :subjectId order by next_review_date asc limit 1", nativeQuery = true)
+    Date findMostRecentNextReviewDate(@Param("subjectId") Long subjectId);
+
+
 }

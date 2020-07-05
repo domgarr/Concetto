@@ -6,6 +6,7 @@ import { SubjectService } from '../services/subject.service';
 import { Subject } from '../models/subject';
 import { InterIntervalService } from '../services/inter-interval.service';
 import { empty } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-study',
@@ -43,7 +44,7 @@ perfectProgressStyle : string;
 perfectProgressAriaValueNow : string;
   
 
-  constructor(private conceptService : ConceptService, private subjectService : SubjectService, private activatedRoute : ActivatedRoute, private router : Router, private interIntervalService : InterIntervalService) {
+  constructor(private conceptService : ConceptService, private subjectService : SubjectService, private activatedRoute : ActivatedRoute, private router : Router, private interIntervalService : InterIntervalService, public datePipe : DatePipe) {
     this.renderViewConcept = true;
     this.subject = new Subject();
 
@@ -104,6 +105,9 @@ perfectProgressAriaValueNow : string;
       this.concept.interInterval = interInterval;
       if(this.concepts.length == 0){
         this.renderViewConcept = false;
+        this.subjectService.getSubject(this.subject.id).subscribe(subject =>{
+          this.subject = subject;
+        });
         return;
       }
       this.rehearsedConcepts.push(this.concept);
