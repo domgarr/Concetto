@@ -35,11 +35,10 @@ public class InterIntervalController {
     public InterInterval calculateNextInterInterval(@RequestBody InterInterval interInterval){
         InterInterval fetchedInterInterval = interIntervalService.find(interInterval.getId());
         InterInterval updatedInterInterval = IntervalUtility.calculateNextInterval(interInterval.getResponseRating(), fetchedInterInterval);
+
         Concept fetchedConcept = conceptService.findByInterIntervalId(interInterval.getId());
-
-
         //Using the newly calculated length (CalculateNextInterval) add to the nextReviewDate and update the concept.
-        fetchedConcept.setNextReviewDate(dateUtility.addDaysToDate(fetchedConcept.getNextReviewDate(), interInterval.getLength()));
+        fetchedConcept.setNextReviewDate(dateUtility.addDaysToDate(new Date(), updatedInterInterval.getLength()));
         conceptService.save(fetchedConcept);
 
         Long subjectId = conceptService.findSubjectIdByInterIntervalId(updatedInterInterval.getId());
