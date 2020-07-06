@@ -42,7 +42,7 @@ public class SubjectController {
     }
 
     @GetMapping("/all")
-    List<SubjectDTO> getAllSubjectsByUserId(OAuth2Authentication authentication){
+    List<SubjectDTO> getAllSubjectsByUserId(OAuth2Authentication authentication, @RequestParam(value="review", required=false, defaultValue="false") boolean review){
         User user = userService.getUserByEmail(authUtility.getEmail(authentication));
         List<Subject> subjects = subjectService.findAllWhereLastUpdateIsInPast(user.getId());
 
@@ -57,9 +57,14 @@ public class SubjectController {
             subjectService.saveAll(subjects);
         }
 
-        List<SubjectDTO> subjectsDto = subjectService.findAllDtoByUserId(user.getId());
-        return subjectsDto;
+        if(review){
+            return subjectService.findAllSubjectByUserIdToReview(user.getId());
+        }else{
+            return subjectService.findAllDtoByUserId(user.getId());
+        }
     }
+
+
 
     @GetMapping("/{id}")
     SubjectDTO getSubjectById(@PathVariable Long id){

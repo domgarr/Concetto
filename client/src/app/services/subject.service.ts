@@ -17,6 +17,10 @@ export class SubjectService {
     return this.http.get<Subject[]>(this.FIND_ALL_SUBJECTS);
   }
 
+  getAllSubjectsToReview() : Observable<Subject[]>{
+    return this.http.get<Subject[]>(this.FIND_ALL_SUBJECTS, {params: { "review" : "true" }});
+  }
+
   getSubject(id : Number){
     return this.http.get<Subject>(this.SUBJECT_URL + "/" + id)
   }

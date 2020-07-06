@@ -6,7 +6,7 @@
     </div>
     
     <div class="my-3 p-3 bg-white rounded shadow-sm">
-    <h6 class="border-bottom border-gray pb-2 mb-0">Recent activity</h6>
+    <h6 class="border-bottom border-gray pb-2 mb-0">Upcoming activity</h6>
     <div class="media text-muted pt-3">
       <p class="media-body pb-3 mb-0 small border-botom border-gray">
         <strong class="d-block text-gray-dark"> Route guard</strong>  
@@ -16,14 +16,37 @@
     </div>
   </div>
   
-  <div class="my-3 p-3 bg-white rounded shadow-sm">
-    <h6 class="border-bottom border-gray pb-2 mb-0">Need to review</h6>
-    <div class="media text-muted pt-3">
-      <p class="media-body pb-3 mb-0 small border-botom border-gray">
-        <strong class="d-block text-gray-dark"> Route guard</strong>  
-      Tes test test
-      
-      </p>
-    </div>
+  <div class="row">
+    <div class = "col-sm-12 col-md-6">
+      <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <h6 class="border-bottom border-gray pb-2 mb-0">Need to review</h6>
+        <div class="media text-muted pt-3">
+          <ul class="list-group-flush w-100 remove-padding-inline-start">
+            
+            <li *ngFor="let subject of subjectsToReview" class="list-group-item">
+              <button type="button" class="btn btn-link"> <strong class="d-inline text-gray-dark">{{subject.name}}</strong><span class="badge badge-primary ml-2">{{subject.reviewCount}}</span></button>
+            </li>
+          </ul>
+        </div>
+      </div>
   </div>
+  <div class = "col-sm-12 col-md-6">
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+      <h6 class="border-bottom border-gray pb-2 mb-0">Need to finish</h6>
+      <div class="media text-muted pt-3">
+        <ul class="list-group-flush w-100 remove-padding-inline-start">
+          <li class="list-group-item">
+            <button type="button" class="btn btn-link"> <strong class="d-inline text-gray-dark">Angular</strong><span class="badge badge-warning ml-2">3</span></button>
+          </li>
+          <li class="list-group-item">
+            <button type="button" class="btn btn-link"> <strong class="d-inline text-gray-dark">Angular</strong><span class="badge badge-warning ml-2">3</span></button>
+          </li>
+          <li class="list-group-item">
+            <button type="button" class="btn btn-link"> <strong class="d-inline text-gray-dark">Angular</strong><span class="badge badge-warning ml-2">3</span></button>
+          </li>
+        </ul>
+      </div>
+    </div>
+</div>
+</div>
 </div>

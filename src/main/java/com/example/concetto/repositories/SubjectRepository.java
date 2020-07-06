@@ -35,4 +35,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     @Modifying
     @Query(value ="update subject s set s.next_review_date = (select next_review_date from concept where subject_id = :subjectId order by next_review_date asc limit 1)", nativeQuery = true)
     Integer updateNextReviewDateFromMostRecentConcept(@Param("subjectId") Long subjectId);
+
+    @Query(value="select * from subject where user_id = :userId AND review_count > 0", nativeQuery = true)
+    List<Subject> findAllSubjectByUserIdToReview(@Param("userId") Long userId);
 }

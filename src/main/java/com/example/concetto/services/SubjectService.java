@@ -19,5 +19,5 @@ public interface SubjectService {
     List<Subject> findAllWhereLastUpdateIsInPast(Long userId);
     List<Subject> saveAll(List<Subject> subjects);
     Integer updateNextReviewDateFromMostRecentConcept(Long subjectId);
-
+    List<SubjectDTO> findAllSubjectByUserIdToReview(Long userId);
 }
