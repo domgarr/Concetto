@@ -23,7 +23,7 @@
         <div class="media text-muted pt-3">
           <ul class="list-group-flush w-100 remove-padding-inline-start">
             <li *ngFor="let subject of subjectsToReview" class="list-group-item">
-              <button type="button" class="btn btn-link"> <strong class="d-inline text-gray-dark">{{subject.name}}</strong><span class="badge badge-primary ml-2">{{subject.reviewCount}}</span></button>
+              <button type="button" class="btn btn-link" (click)="onNeedToReviewClicked(subject.id)"> <strong class="d-inline text-gray-dark">{{subject.name}}</strong><span class="badge badge-primary ml-2">{{subject.reviewCount}}</span></button>
             </li>
           </ul>
         </div>

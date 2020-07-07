@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SubjectService } from '../services/subject.service';
 import { Subject } from '../models/subject';
+import { RouterService } from '../services/router.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +14,7 @@ export class DashboardComponent implements OnInit {
   subjectsToReview : Subject[];
   subjectsToFinish : Subject[];
 
-  constructor(private subjectService : SubjectService ) { }
+  constructor(private subjectService : SubjectService, private routerService : RouterService ) { }
 
   ngOnInit() {
     this.subjectService.getAllSubjectsInDoneState().subscribe( subjects =>{
@@ -22,6 +23,10 @@ export class DashboardComponent implements OnInit {
     this.subjectService.getAllSubjectsInSaveState().subscribe(subjects =>{
       this.subjectsToFinish = subjects;
     });
+  }
+
+  onNeedToReviewClicked(subjectId : number){
+    this.routerService.routeToStudy(subjectId);
   }
 
 }

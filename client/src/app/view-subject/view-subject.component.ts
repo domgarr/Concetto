@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Subject} from '../models/subject';
 import { SubjectService } from '../services/subject.service';
-import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { RouterService } from '../services/router.service';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { DatePipe } from '@angular/common';
 })
 export class ViewSubjectComponent implements OnInit {
 
-  constructor(private subjectService : SubjectService, private router : Router, public datePipe: DatePipe) { }
+  constructor(private subjectService : SubjectService,private routerService : RouterService, public datePipe: DatePipe) { }
 
   subjects : Subject[];
 
@@ -27,13 +27,10 @@ export class ViewSubjectComponent implements OnInit {
   }
 
   onAddConceptToSubject(subjectId : number){
-    this.router.navigate(['/u/add-concept', subjectId]);
+    this.routerService.routeToAddConcept(subjectId);
   }
 
   onStudySubject(subjectId : number){
-    this.router.navigate(['/u/study', subjectId]);
+    this.routerService.routeToStudy(subjectId);
   }
-
-
-
 }
