@@ -2,6 +2,8 @@ package com.example.concetto.services;
 
 import com.example.concetto.api.v1.model.SubjectDTO;
 import com.example.concetto.models.Subject;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
@@ -19,5 +21,8 @@ public interface SubjectService {
     List<Subject> findAllWhereLastUpdateIsInPast(Long userId);
     List<Subject> saveAll(List<Subject> subjects);
     Integer updateNextReviewDateFromMostRecentConcept(Long subjectId);
-    List<SubjectDTO> findAllSubjectByUserIdToReview(Long userId);
+    List<SubjectDTO> findAllSubjectByUserIdAndDone(Long userId);
+    List<SubjectDTO> findAllSubjectByUserIdAndSaved(Long userId);
+    int incrementSaveCount(Long id);
+    int decrementSaveCount(Long id);
 }

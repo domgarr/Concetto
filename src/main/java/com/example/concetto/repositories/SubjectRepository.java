@@ -38,4 +38,17 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     @Query(value="select * from subject where user_id = :userId AND review_count > 0", nativeQuery = true)
     List<Subject> findAllSubjectByUserIdToReview(@Param("userId") Long userId);
+
+    @Query(value="select * from subject where user_id = :userId AND save_count > 0", nativeQuery = true)
+    List<Subject> findAllSubjectByUserIdToFinish(@Param("userId") Long userId);
+
+    @Modifying
+    @Query(value = "update subject s set s.save_count = s.save_count + 1 where id = :id", nativeQuery = true)
+    int incrementSaveCount(@Param("id") Long id);
+
+    @Modifying
+    @Query(value = "update subject s set s.save_count = s.save_count - 1 where id = :id", nativeQuery = true)
+    int decrementSaveCount(@Param("id") Long id);
+
+
 }

@@ -14,6 +14,7 @@ public class Subject {
 
     public Subject(){
         this.reviewCount = 0;
+        this.saveCount = 0;
     }
 
     @Id
@@ -30,6 +31,7 @@ public class Subject {
 
     private int count;
     private int reviewCount;
+    private int saveCount;
     private Date lastUpdate;
     private Date nextReviewDate;
 }

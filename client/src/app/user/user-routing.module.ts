@@ -21,7 +21,6 @@ const routes: Routes = [
         {path: 'edit/:concept_id', component: AddConceptComponent},
         {path: 'study/:subject_id', component: StudyComponent},
         {path: 'view-subject', component: ViewSubjectComponent},
-
         {path:'', component: DashboardComponent}
       ]
     }

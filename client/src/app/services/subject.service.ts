@@ -17,8 +17,12 @@ export class SubjectService {
     return this.http.get<Subject[]>(this.FIND_ALL_SUBJECTS);
   }
 
-  getAllSubjectsToReview() : Observable<Subject[]>{
-    return this.http.get<Subject[]>(this.FIND_ALL_SUBJECTS, {params: { "review" : "true" }});
+  getAllSubjectsInDoneState() : Observable<Subject[]>{
+    return this.http.get<Subject[]>(this.FIND_ALL_SUBJECTS, {params: { "s" : "done" }});
+  }
+
+  getAllSubjectsInSaveState() : Observable<Subject[]>{
+    return this.http.get<Subject[]>(this.FIND_ALL_SUBJECTS, {params: { "s" : "save" }});
   }
 
   getSubject(id : Number){

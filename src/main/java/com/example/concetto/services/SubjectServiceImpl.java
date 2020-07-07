@@ -89,9 +89,26 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<SubjectDTO> findAllSubjectByUserIdToReview(Long userId) {
+    public List<SubjectDTO> findAllSubjectByUserIdAndDone(Long userId) {
         return subjectRepository.findAllSubjectByUserIdToReview(userId).stream()
                 .map(subjectMapper :: subjectToSubjectDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SubjectDTO> findAllSubjectByUserIdAndSaved(Long userId) {
+        return subjectRepository.findAllSubjectByUserIdToFinish(userId).stream()
+                .map(subjectMapper :: subjectToSubjectDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int incrementSaveCount(Long id) {
+        return subjectRepository.incrementSaveCount(id);
+    }
+
+    @Override
+    public int decrementSaveCount(Long id) {
+        return subjectRepository.decrementSaveCount(id);
     }
 }

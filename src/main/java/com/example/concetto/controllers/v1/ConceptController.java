@@ -108,6 +108,9 @@ public class ConceptController {
         subjectService.incrementReviewCount(concept.getSubject().getId());
         subjectService.updateNextReviewDateFromMostRecentConcept(concept.getSubject().getId());
 
+        if(!savedConcept.isDone()){
+            subjectService.incrementSaveCount(concept.getSubject().getId());
+        }
 
         //TODO: Re-think if ConceptDTO should be returned instead of the concept.
         return new ResponseEntity<>(savedConcept, HttpStatus.OK);

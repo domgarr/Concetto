@@ -1,6 +1,7 @@
 package com.example.concetto.controllers.v1;
 
 import com.example.concetto.api.v1.model.SubjectDTO;
+import com.example.concetto.exception.DataIntegrityError;
 import com.example.concetto.models.Subject;
 import com.example.concetto.models.User;
 import com.example.concetto.services.ConceptService;
@@ -11,17 +12,21 @@ import com.example.concetto.utility.DateUtility;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @RestController()
 @RequestMapping("/api/v1/subject")
 public class SubjectController {
-    ConceptService conceptService;
-    SubjectService subjectService;
-    UserService userService;
-    AuthUtility authUtility;
-    DateUtility dateUtility;
+    private final static String DONE = "done";
+    private final static String SAVE = "save";
+
+    private ConceptService conceptService;
+    private SubjectService subjectService;
+    private UserService userService;
+    private AuthUtility authUtility;
+    private DateUtility dateUtility;
 
     public SubjectController(SubjectService subjectService, UserService userService, AuthUtility authUtility, ConceptService conceptService, DateUtility dateUtility) {
         this.conceptService = conceptService;
@@ -42,7 +47,7 @@ public class SubjectController {
     }
 
     @GetMapping("/all")
-    List<SubjectDTO> getAllSubjectsByUserId(OAuth2Authentication authentication, @RequestParam(value="review", required=false, defaultValue="false") boolean review){
+    List<SubjectDTO> getAllSubjectsByUserId(OAuth2Authentication authentication, @RequestParam(value="s", required=false) String sortParam){
         User user = userService.getUserByEmail(authUtility.getEmail(authentication));
         List<Subject> subjects = subjectService.findAllWhereLastUpdateIsInPast(user.getId());
 
@@ -57,11 +62,25 @@ public class SubjectController {
             subjectService.saveAll(subjects);
         }
 
-        if(review){
-            return subjectService.findAllSubjectByUserIdToReview(user.getId());
+        List<SubjectDTO> subjectDTOS;
+
+        if(sortParam == null){
+            subjectDTOS = subjectService.findAllDtoByUserId(user.getId());
         }else{
-            return subjectService.findAllDtoByUserId(user.getId());
+            switch(sortParam.toLowerCase()){
+                case DONE:
+                    subjectDTOS = subjectService.findAllSubjectByUserIdAndDone(user.getId());
+                    break;
+                case SAVE:
+                    subjectDTOS = subjectService.findAllSubjectByUserIdAndSaved(user.getId());
+                    break;
+                default:
+                    //TODO: throw error...
+                    throw new DataIntegrityError("Given sort param does not exist.");
+            }
         }
+
+        return subjectDTOS;
     }
 
 

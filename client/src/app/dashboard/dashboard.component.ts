@@ -7,15 +7,20 @@ import { Subject } from '../models/subject';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
+
 export class DashboardComponent implements OnInit {
 
   subjectsToReview : Subject[];
+  subjectsToFinish : Subject[];
 
-  constructor(private subjectService : SubjectService) { }
+  constructor(private subjectService : SubjectService ) { }
 
   ngOnInit() {
-    this.subjectService.getAllSubjectsToReview().subscribe( subjects =>{
+    this.subjectService.getAllSubjectsInDoneState().subscribe( subjects =>{
       this.subjectsToReview = subjects;
+    });
+    this.subjectService.getAllSubjectsInSaveState().subscribe(subjects =>{
+      this.subjectsToFinish = subjects;
     });
   }
 

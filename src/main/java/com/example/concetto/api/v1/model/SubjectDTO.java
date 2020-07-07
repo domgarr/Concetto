@@ -10,5 +10,6 @@ public class SubjectDTO {
     private String name;
     private int count;
     private int reviewCount;
+    private int saveCount;
     private Date nextReviewDate;
 }
