@@ -112,4 +112,17 @@ public class ConceptServiceImpl implements ConceptService {
     public Date findMostRecentNextReviewDate(Long subjectId) {
         return conceptRepository.findMostRecentNextReviewDate(subjectId);
     }
+
+    @Override
+    public List<ConceptDTO> findAllBySubjectIdNotDone(Long subjectId) {
+        return conceptRepository.findAllBySubjectIdNotDone(subjectId)
+                .stream()
+                .map(conceptMapper :: conceptToConceptDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long findSubjectIdById(Long id) {
+        return conceptRepository.findSubjectIdById(id);
+    }
 }

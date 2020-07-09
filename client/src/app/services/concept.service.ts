@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import {Concept} from '../models/concept';
 import {Observable, of} from 'rxjs';
+
+
+enum SortParam {
+  SAVED = "saved",
+  IS_SCHEDULED = "is_scheduled"
+}
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +17,9 @@ export class ConceptService {
   private readonly getAllConceptsUrl = this.BASE_CONCEPT_URL + "all";
   private readonly GET_ALL_CONCEPTS_BY_SUBJECT_ID = this.BASE_CONCEPT_URL + "subject/";
   private readonly SCHEDULED_PARAMETER : string = "is_scheduled";
+  //https://stackoverflow.com/questions/29844959/enum-inside-class-typescript-definition-file
+  static readonly SortParam = SortParam;
+  
 
   constructor(private http : HttpClient) { }
 
@@ -31,17 +40,15 @@ export class ConceptService {
     return this.http.get<Concept>(this.BASE_CONCEPT_URL + id, this.getHttpOptions());
   }
 
-  getConcepts() : Observable<Concept[]> {
-    return this.http.get<Concept[]>(this.getAllConceptsUrl, this.getHttpOptions());
-  }
-
-  getAllConceptsBySubjectId(id : number){
-    return this.http.get<Concept[]>(this.GET_ALL_CONCEPTS_BY_SUBJECT_ID + id, this.getHttpOptions());
-  }
-
   //TODO: Figure out how to use a variable for 'is_scheduled' parameter
-  getAllConceptsBySubjectIdScheduledForReview(id : number){
-    return this.http.get<Concept[]>(this.GET_ALL_CONCEPTS_BY_SUBJECT_ID + id, {params: { "is_scheduled" : "true" }} );
+  getAllConceptsBySubjectId(id : string, sortParam : SortParam){
+    let params : HttpParams = new HttpParams();  
+    params = params.set("s", sortParam);
+    
+
+    console.log(params);
+
+    return this.http.get<Concept[]>(this.GET_ALL_CONCEPTS_BY_SUBJECT_ID + id, { params } );
   }
 
   private getHttpOptions(){

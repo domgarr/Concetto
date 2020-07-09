@@ -62,9 +62,9 @@ perfectProgressAriaValueNow : string;
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params =>{
-      let subjectId : number = Number(params.get("subject_id"));
+      let subjectId = params.get("subject_id");
       //TODO: Load in data using AuthGuard?
-      this.conceptService.getAllConceptsBySubjectIdScheduledForReview(subjectId).subscribe(concepts =>{
+      this.conceptService.getAllConceptsBySubjectId(subjectId, ConceptService.SortParam.IS_SCHEDULED).subscribe(concepts =>{
         if(concepts.length == 0){
           this.renderViewConcept = false;
         }

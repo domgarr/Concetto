@@ -3,6 +3,7 @@ package com.example.concetto.controllers.v1;
 import com.example.concetto.api.v1.model.ConceptDTO;
 import com.example.concetto.api.v1.model.ConceptListDTO;
 import com.example.concetto.exception.ForbiddenAccessError;
+import com.example.concetto.exception.NotFoundException;
 import com.example.concetto.models.Concept;
 import com.example.concetto.exception.DataIntegrityError;
 import com.example.concetto.models.InterInterval;
@@ -10,6 +11,7 @@ import com.example.concetto.models.User;
 import com.example.concetto.services.*;
 import com.example.concetto.utility.AuthUtility;
 import lombok.extern.slf4j.Slf4j;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -32,6 +34,10 @@ public class ConceptController {
     private final SubjectService subjectService;
     private final InterIntervalService interIntervalService;
     private final AuthUtility authUtility;
+
+    private enum SortParam {
+        is_scheduled, saved
+    }
 
 
     public ConceptController(ConceptService conceptService, UserService userService, SubjectService subjectService, InterIntervalService interIntervalService, AuthUtility authUtility) {
@@ -56,13 +62,25 @@ public class ConceptController {
 
     //TODO: Add error handling
     @GetMapping("/subject/{id}")
-    public ResponseEntity<List<ConceptDTO>> getConceptsBySubjectId(@PathVariable Long id, @RequestParam(value = "is_scheduled", required = false, defaultValue = "false") boolean scheduled) {
-        if(scheduled){
-            //Return Concepts that are ready to be reviewed.
-            return new ResponseEntity<>(conceptService.findAllConceptsBySubjectIdScheduledForReview(id), HttpStatus.OK);
-        }else{
+    public ResponseEntity<List<ConceptDTO>> getConceptsBySubjectId(@PathVariable Long id, @RequestParam(value = "s", required = false) String sortParam, OAuth2Authentication authentication) {
+        User user = userService.getUserByEmail(authUtility.getEmail(authentication));
+        subjectOwnerCheck(id, user);
+
+        if(sortParam == null){
             return new ResponseEntity<>(conceptService.findAllConceptsBySubjectId(id), HttpStatus.OK);
         }
+
+        SortParam sortParamToEnum = SortParam.valueOf(sortParam);
+
+        switch(sortParamToEnum){
+            case is_scheduled:
+                return new ResponseEntity<>(conceptService.findAllConceptsBySubjectIdScheduledForReview(id), HttpStatus.OK);
+            case saved:
+                return new ResponseEntity<>(conceptService.findAllBySubjectIdNotDone(id), HttpStatus.OK);
+            default:
+                throw new NotFoundException("Given param not found");
+        }
+
     }
 
     @Transactional
@@ -79,6 +97,12 @@ public class ConceptController {
             existingConcept.setReviewed(concept.isReviewed());
             existingConcept.setSimplified(concept.isSimplified());
 
+            boolean isDone = existingConcept.isDone();
+            Concept savedConcept = conceptService.save(existingConcept);
+            if(isDone == false && savedConcept.isDone()){
+                Long subjectId = conceptService.findSubjectIdById(savedConcept.getId());
+                subjectService.decrementSaveCount(subjectId);
+            }
             return new ResponseEntity<>(conceptService.save(existingConcept), HttpStatus.OK);
         }else{
             throw new ForbiddenAccessError("Forbidden action. The resource acted upon does not belong to the user.");
@@ -90,11 +114,7 @@ public class ConceptController {
     public ResponseEntity<Concept> saveConcept(@RequestBody Concept concept, OAuth2Authentication authentication) {
 
         User user = userService.getUserByEmail(authUtility.getEmail(authentication));
-        Long subjectUserId = subjectService.findUserIdById(concept.getSubject().getId());
-
-        if(user.getId() != subjectUserId){
-            throw new ForbiddenAccessError("The user does not have ownership of the given subject");
-        }
+        subjectOwnerCheck(concept.getSubject().getId(), user);
 
         InterInterval interInterval = interIntervalService.save(new InterInterval());
 
@@ -114,6 +134,14 @@ public class ConceptController {
 
         //TODO: Re-think if ConceptDTO should be returned instead of the concept.
         return new ResponseEntity<>(savedConcept, HttpStatus.OK);
+    }
+
+    private void subjectOwnerCheck(Long subjectId, User user) {
+        Long userIdFromSubject = subjectService.findUserIdById(subjectId);
+
+        if(user.getId() != userIdFromSubject){
+            throw new ForbiddenAccessError("The user does not have ownership of the given subject");
+        }
     }
 
     private void validateConcept(Concept concept) {

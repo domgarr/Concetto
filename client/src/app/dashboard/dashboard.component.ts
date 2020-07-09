@@ -3,6 +3,8 @@ import { SubjectService } from '../services/subject.service';
 import { Subject } from '../models/subject';
 import { RouterService } from '../services/router.service';
 
+import Chart from 'chart.js';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -25,8 +27,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  onNeedToReviewClicked(subjectId : number){
+  onNeedToReview(subjectId : number){
     this.routerService.routeToStudy(subjectId);
+  }
+
+  onNeedToFinish(subjectId : number){
+    this.routerService.routeToFinishConcept(subjectId);
   }
 
 }

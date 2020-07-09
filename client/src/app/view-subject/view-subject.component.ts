@@ -3,6 +3,7 @@ import {Subject} from '../models/subject';
 import { SubjectService } from '../services/subject.service';
 import { DatePipe } from '@angular/common';
 import { RouterService } from '../services/router.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -11,8 +12,16 @@ import { RouterService } from '../services/router.service';
   styleUrls: ['./view-subject.component.css']
 })
 export class ViewSubjectComponent implements OnInit {
+  showMessage : boolean;
 
-  constructor(private subjectService : SubjectService,private routerService : RouterService, public datePipe: DatePipe) { }
+  constructor(private subjectService : SubjectService,private routerService : RouterService, public datePipe: DatePipe, private router : Router) { 
+    this.showMessage = false;
+    
+    let extras = this.router.getCurrentNavigation().extras;
+    if(extras.state){
+      this.showMessage = extras.state.finishedConcepts
+    }
+  }
 
   subjects : Subject[];
 
@@ -20,6 +29,7 @@ export class ViewSubjectComponent implements OnInit {
     this.subjectService.getAllSubjects().subscribe( subjects =>{
       this.subjects = subjects;
     });
+
   }
 
   onSubjectSaved(subject : Subject){

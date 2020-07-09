@@ -25,7 +25,7 @@ export class SubjectService {
     return this.http.get<Subject[]>(this.FIND_ALL_SUBJECTS, {params: { "s" : "save" }});
   }
 
-  getSubject(id : Number){
+  getSubject(id){
     return this.http.get<Subject>(this.SUBJECT_URL + "/" + id)
   }
 

@@ -1,5 +1,11 @@
 
 <div class="container">
+    <div *ngIf="showMessage" class="alert alert-info alert-dismissible fade show mt-2" role="alert">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <app-add-subject (subjectSaved)="onSubjectSaved($event)"></app-add-subject>
     <div class ="row justify-content-center">
         <div *ngFor="let subject of subjects" class="card m-2 max-width-300px col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 " >
@@ -13,3 +19,5 @@
         </div>
     </div>
 </div>
+
+

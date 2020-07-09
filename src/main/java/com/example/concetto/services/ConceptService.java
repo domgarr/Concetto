@@ -21,4 +21,6 @@ public interface ConceptService {
     Integer reviewCountBySubjectId(Long subjectId);
     Long findSubjectIdByInterIntervalId(Long interIntervalId);
     Date findMostRecentNextReviewDate(Long subjectId);
+    List<ConceptDTO> findAllBySubjectIdNotDone(Long subjectId);
+    Long findSubjectIdById(Long id);
 }

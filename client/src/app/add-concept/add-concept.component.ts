@@ -16,10 +16,14 @@ export class AddConceptComponent implements OnInit {
 
   selectedSubject : Subject;
   subjects : Subject[];
+
+  conceptsToFinish : Concept[];
+  conceptsToFinishIndex = 0;
   
   error : boolean;
   adding : boolean;
   updating : boolean;
+  finishing : boolean;
 
   @ViewChild('conceptForm') conceptForm: any;
 
@@ -33,6 +37,10 @@ export class AddConceptComponent implements OnInit {
   showMessage : boolean = false;
   showMessageContent : string = "test";
 
+  private readonly ADD = "add";
+  private readonly EDIT = "edit";
+  private readonly FINISH = "finish";
+
   constructor(private conceptService : ConceptService, private subjectService : SubjectService, private activatedRoute : ActivatedRoute, private cdr : ChangeDetectorRef, private router : Router) { 
     this.concept = new Concept();
     this.concept.subject = new Subject(); //Prevent error upon first render.
@@ -45,26 +53,29 @@ export class AddConceptComponent implements OnInit {
   ngOnInit() {
     this.subjectService.getAllSubjects().subscribe(subjects =>{
       this.subjects = subjects;
-      this.activatedRoute.paramMap.subscribe( params =>{
-         if(params.has("subject_id")){
-          let subjectId : string = params.get("subject_id");
-          this.setSubjectSelectedTrue(subjectId);
-          this.adding = true;
-         }else if(params.has("concept_id")){
-           let conceptId : string = params.get("concept_id");
-           this.conceptService.getConceptById(Number(conceptId)).subscribe(concept =>{
-           this.concept = concept;
-           this.updating = true;
-           });
-         }else{
-           subjects[0].selected = true;
-           this.concept.subject = {...subjects[0]};
-           this.selectedSubject = {...subjects[0]};
-           this.adding = true;
-         }
+      
+      this.activatedRoute.url.subscribe(url =>{
+        this.activatedRoute.paramMap.subscribe( params =>{
+        console.log(url[0]);
+        let rootPath = url[0].path;
+        switch(rootPath){
+          case this.ADD:
+            if(params.has("subject_id")){
+              this.addSubjectParamGiven(params);
+            }else{
+              this.add();
+            }
+            break;
+          case this.EDIT:
+            this.edit(params);
+            break;
+          case this.FINISH:
+            this.finish(params);
+            break;
+        } 
       });
-  });
-
+     });
+    });
   }
 
   onConceptSubmit(isDone : boolean){
@@ -96,11 +107,71 @@ export class AddConceptComponent implements OnInit {
     });
   }
 
+  addSubjectParamGiven(params){
+    let subjectId : string = params.get("subject_id");
+    this.setSubjectSelectedTrue(subjectId);
+    this.adding = true;
+  }
+
+  add(){
+    this.subjects[0].selected = true;
+    this.concept.subject = {...this.subjects[0]};
+    this.selectedSubject = {...this.subjects[0]};
+    this.adding = true;
+  }
+
+  edit(params){
+    let conceptId : string = params.get("concept_id");
+    this.conceptService.getConceptById(Number(conceptId)).subscribe(concept =>{
+    this.concept = concept;
+    this.updating = true;
+    });
+  }
+
+  finish(params){
+    let subjectId : string = params.get("subject_id");
+    this.setSubjectSelectedTrue(subjectId);
+    this.conceptService.getAllConceptsBySubjectId(subjectId, ConceptService.SortParam.SAVED).subscribe( concepts =>{
+      this.conceptsToFinish = concepts;
+      this.finishing = true;
+      this.updating = true;
+
+      //By default choose the first concept in array.
+      let conceptToFinish = this.conceptsToFinish[0];
+      conceptToFinish['selected'] = true;
+      
+      //Fill in form with saved concept
+      this.concept = conceptToFinish;
+    });
+  }
+
   onConceptUpdate(){
     this.conceptService.updateConcept(this.concept).subscribe( (updatedConcept : Concept) =>{
-      console.log(updatedConcept);
-      this.router.navigate(['/u/study', updatedConcept.subject.id]);
+      if(!this.finishing){
+        this.router.navigate(['/u/study', updatedConcept.subject.id]);
+      }else{
+        this.concept = this.nextConceptToFinish();
+        
+      }
     });
+  }
+
+  nextConceptToFinish(){
+    this.conceptsToFinish.splice(this.conceptsToFinishIndex, 1);
+    if(this.conceptsToFinish.length == 0){
+      this.router.navigate(['/u/subject'], {state:{  finishedConcepts : true }});
+      
+      return;
+    }
+
+    //Handle removal of the last Concept at the end of the array.
+    if(this.conceptsToFinishIndex > this.conceptsToFinish.length){
+      this.conceptsToFinishIndex = this.conceptsToFinish.length - 1;
+    }
+    let conceptToFinish =  this.conceptsToFinish[this.conceptsToFinishIndex];
+    conceptToFinish['selected'] = true;
+
+    return conceptToFinish;
   }
 
   setSubjectSelectedTrue(subjectId : string){
@@ -131,5 +202,9 @@ export class AddConceptComponent implements OnInit {
     });
   }
 
-  
+  addSelectedToConcepts(concepts : Concept[]){
+    concepts.forEach( concept => {
+      concept['selected'] = false;
+    });
+  }
 }

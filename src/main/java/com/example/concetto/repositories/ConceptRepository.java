@@ -35,5 +35,11 @@ public interface ConceptRepository extends JpaRepository<Concept, Long> {
     @Query(value ="select next_review_date from concept where subject_id = :subjectId order by next_review_date asc limit 1", nativeQuery = true)
     Date findMostRecentNextReviewDate(@Param("subjectId") Long subjectId);
 
+    @Query(value ="select * from concept where subject_id = :subjectId and NOT done = 1", nativeQuery = true)
+    List<Concept> findAllBySubjectIdNotDone(@Param("subjectId") Long subjectId);
+
+    @Query(value = "select subject_id from concept where id = :id", nativeQuery = true)
+    Long findSubjectIdById(@Param("id") Long id);
+
 
 }
