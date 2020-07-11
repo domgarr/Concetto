@@ -27,7 +27,7 @@ public class CountPerDateRepository  {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    String query = "select DATE_FORMAT(next_review_date, \"%M %d %Y\") as review_date, count(*) as count from concept where datediff( curdate(),next_review_date) > -7 AND datediff( curdate(),next_review_date) <= 0 AND user_id = ? " +
+    String query = "select DATE_FORMAT(next_review_date, \"%M %d %Y\") as review_date, count(*) as count from concept where datediff( curdate(),next_review_date) > -7 AND datediff( curdate(),next_review_date) <= 0 AND user_id = ? AND done = 1 " +
             "GROUP BY DATE_FORMAT(next_review_date, \"%M %d %Y\") ORDER BY  next_review_date ASC";
 
     public List<CountPerDate> findCountOfNextSevenDueConceptsByUserId(Long userId){

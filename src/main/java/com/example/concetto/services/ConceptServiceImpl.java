@@ -10,7 +10,6 @@ import com.example.concetto.repositories.CountPerDateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -87,7 +86,7 @@ public class ConceptServiceImpl implements ConceptService {
 
     @Override
     public List<ConceptDTO> findAllConceptsBySubjectIdScheduledForReview(Long id) {
-        return conceptRepository.findAllBySubjectIdThatAreScheduledForReview(id)
+        return conceptRepository.findAllBySubjectIdThatAreScheduledForReviewAndDone(id)
                 .stream()
                 .map(conceptMapper::conceptToConceptDTO)
                 .collect(Collectors.toList());
