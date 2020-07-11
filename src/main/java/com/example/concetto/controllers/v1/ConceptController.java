@@ -6,12 +6,12 @@ import com.example.concetto.exception.ForbiddenAccessError;
 import com.example.concetto.exception.NotFoundException;
 import com.example.concetto.models.Concept;
 import com.example.concetto.exception.DataIntegrityError;
+import com.example.concetto.models.CountPerDate;
 import com.example.concetto.models.InterInterval;
 import com.example.concetto.models.User;
 import com.example.concetto.services.*;
 import com.example.concetto.utility.AuthUtility;
 import lombok.extern.slf4j.Slf4j;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -158,6 +158,15 @@ public class ConceptController {
             //The use of substring to to remove the space from the last error message that is appended.
             throw new DataIntegrityError(errorMessage.substring(0, errorMessage.length() - 2));
         }
+    }
+
+    @GetMapping("/review-count-per-date")
+    public ResponseEntity<List<CountPerDate>> getCountOfConceptsPerDate(OAuth2Authentication authentication){
+        User user = userService.getUserByEmail(authUtility.getEmail(authentication));
+
+        List<CountPerDate> countPerDate = conceptService.findConceptReviewCountPerDate(user.getId());
+
+        return new ResponseEntity<>(countPerDate, HttpStatus.OK);
     }
 
 }

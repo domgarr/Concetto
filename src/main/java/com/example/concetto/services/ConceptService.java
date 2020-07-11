@@ -2,7 +2,7 @@ package com.example.concetto.services;
 
 import com.example.concetto.api.v1.model.ConceptDTO;
 import com.example.concetto.models.Concept;
-import org.springframework.data.repository.query.Param;
+import com.example.concetto.models.CountPerDate;
 
 import java.util.Date;
 import java.util.List;
@@ -23,4 +23,5 @@ public interface ConceptService {
     Date findMostRecentNextReviewDate(Long subjectId);
     List<ConceptDTO> findAllBySubjectIdNotDone(Long subjectId);
     Long findSubjectIdById(Long id);
+    List<CountPerDate> findConceptReviewCountPerDate(Long userId);
 }

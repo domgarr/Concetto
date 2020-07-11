@@ -27,6 +27,7 @@ public class ConceptServiceTest {
     @Mock
     private ConceptRepository conceptRepository;
 
+
     //TODO: The following should only be instantiated once.
     @BeforeEach
     void init() throws Exception {

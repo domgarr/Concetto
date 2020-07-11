@@ -4,18 +4,23 @@ import com.example.concetto.api.v1.mapper.ConceptMapper;
 import com.example.concetto.api.v1.model.ConceptDTO;
 import com.example.concetto.models.Concept;
 import com.example.concetto.exception.NotFoundException;
+import com.example.concetto.models.CountPerDate;
 import com.example.concetto.repositories.ConceptRepository;
+import com.example.concetto.repositories.CountPerDateRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ConceptServiceImpl implements ConceptService {
     private final ConceptMapper conceptMapper;
     private final ConceptRepository conceptRepository;
+    @Autowired
+    private CountPerDateRepository countPerDateRepository;
 
     public ConceptServiceImpl(ConceptMapper conceptMapper, ConceptRepository conceptRepository) {
         this.conceptMapper = conceptMapper;
@@ -124,5 +129,57 @@ public class ConceptServiceImpl implements ConceptService {
     @Override
     public Long findSubjectIdById(Long id) {
         return conceptRepository.findSubjectIdById(id);
+    }
+
+    @Override
+    public List<CountPerDate> findConceptReviewCountPerDate(Long userId) {
+        boolean isFirstDateTodayDate = false;
+        List<CountPerDate> countPerDates = countPerDateRepository.findCountOfNextSevenDueConceptsByUserId(userId);
+        Long pastDueCount = conceptRepository.findCountOfPastDueConceptsByUserId(userId);
+
+        if(!countPerDates.isEmpty()){
+            SimpleDateFormat parser = new SimpleDateFormat("d MMM yyyy");
+            //Check to see if an object containing the current date exists.
+            Date today = new Date();
+            Date firstDateInList = countPerDates.get(0).getReviewDate();
+
+            if(parser.format(today).compareTo(parser.format(firstDateInList)) == 0){
+                isFirstDateTodayDate = true;
+                Long summedCount = countPerDates.get(0).getCount() + pastDueCount;
+                countPerDates.get(0).setCount(summedCount);
+            }
+        }
+
+        if(!isFirstDateTodayDate || countPerDates.isEmpty()){
+            if(pastDueCount > 0){
+                CountPerDate countPerDate = new CountPerDate();
+                countPerDate.setReviewDate(new Date());
+                countPerDate.setCount(pastDueCount);
+
+                countPerDates.add(0, countPerDate);
+            }
+        }
+
+        if(countPerDates.size() != 7){
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat parser = new SimpleDateFormat("d MMM yyyy");
+
+            for(int i = 0; i < 7 ; i++){
+                cal.setTime(new Date());
+                cal.add(Calendar.DATE, i);
+                Date curDate = cal.getTime();
+
+                if(countPerDates.size() - 1 < i ){
+                    countPerDates.add(i, new CountPerDate(curDate, 0L));
+                    continue;
+                }
+
+                Date curReviewDate = countPerDates.get(i).getReviewDate();
+                if(parser.format(curDate).compareTo(parser.format(curReviewDate)) != 0) {
+                    countPerDates.add(i, new CountPerDate(curDate, 0L));
+                }
+            }
+        }
+        return countPerDates;
     }
 }

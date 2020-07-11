@@ -17,6 +17,7 @@ export class ConceptService {
   private readonly getAllConceptsUrl = this.BASE_CONCEPT_URL + "all";
   private readonly GET_ALL_CONCEPTS_BY_SUBJECT_ID = this.BASE_CONCEPT_URL + "subject/";
   private readonly SCHEDULED_PARAMETER : string = "is_scheduled";
+  private readonly REVIEW_COUNT_PER_DATE = "review-count-per-date";
   //https://stackoverflow.com/questions/29844959/enum-inside-class-typescript-definition-file
   static readonly SortParam = SortParam;
   
@@ -49,6 +50,10 @@ export class ConceptService {
     console.log(params);
 
     return this.http.get<Concept[]>(this.GET_ALL_CONCEPTS_BY_SUBJECT_ID + id, { params } );
+  }
+
+  getCountOfConceptsToReviewPerDate() : Observable<any[]>{
+    return this.http.get<any[]>(this.BASE_CONCEPT_URL + this.REVIEW_COUNT_PER_DATE);
   }
 
   private getHttpOptions(){
