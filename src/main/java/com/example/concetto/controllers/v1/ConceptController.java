@@ -125,10 +125,13 @@ public class ConceptController {
 
         Concept savedConcept = conceptService.save(concept);
         subjectService.incrementCount(concept.getSubject().getId());
-        subjectService.incrementReviewCount(concept.getSubject().getId());
-        subjectService.updateNextReviewDateFromMostRecentConcept(concept.getSubject().getId());
 
-        if(!savedConcept.isDone()){
+        if(savedConcept.isDone()){
+            //If a concept is in the done state, it has been 'finished' and is ready to be studied/reviewed.
+            subjectService.incrementReviewCount(concept.getSubject().getId());
+            //Only need to make this call if another concept in done state is added.
+            subjectService.updateNextReviewDateFromMostRecentConcept(concept.getSubject().getId());
+        }else{
             subjectService.incrementSaveCount(concept.getSubject().getId());
         }
 

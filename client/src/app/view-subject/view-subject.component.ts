@@ -28,6 +28,7 @@ export class ViewSubjectComponent implements OnInit {
   ngOnInit() {
     this.subjectService.getAllSubjects().subscribe( subjects =>{
       this.subjects = subjects;
+      console.log(this.subjects);
     });
 
   }

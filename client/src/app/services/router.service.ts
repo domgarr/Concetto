@@ -8,15 +8,23 @@ export class RouterService {
 
   constructor(private router : Router) { }
 
-  routeToStudy(subjectId : number){
+  /**
+   * 
+   * @param subjectId : Can be either a string or an integer. If it's an integer, it will be converted to a string.
+   */
+  routeToStudy(subjectId ){
     this.router.navigate(['/u/study', subjectId]);
    }
 
-  routeToAddConcept(subjectId : number) {
+  routeToAddConcept(subjectId ) {
     this.router.navigate(['/u/add', subjectId]);
   }
 
-  routeToFinishConcept(subjectId : number){
+  routeToFinishConcept(subjectId ){
     this.router.navigate(['/u/finish', subjectId]);
+  }
+
+  routeToEditConcept(conceptId){
+    this.router.navigate(['/u/add-concept', conceptId]);
   }
 }
