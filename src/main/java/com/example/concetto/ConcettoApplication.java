@@ -63,7 +63,7 @@ public class ConcettoApplication extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .logout().logoutSuccessUrl("/").permitAll();
+                .logout().permitAll();
 
     }
 

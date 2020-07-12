@@ -1,22 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'concetto';
+  loggedIn : boolean;
 
   constructor(private authService : AuthService, private router : Router){
+    this.loggedIn = false;
     //Parse URL for the case that Authentication is succesfull.
     let currentUrl = window.location.href;
     let originUrl = window.location.origin;
     let redirectUrl = currentUrl.slice(originUrl.length, currentUrl.length);
-
-    console.log(redirectUrl);
 
     //edge case for /home
     if( redirectUrl.localeCompare("/home") == 0 || redirectUrl.localeCompare("/") == 0){
@@ -27,7 +27,6 @@ export class AppComponent {
     response => this.loginSuccess(),
     error => {
       this.loginFailure()
-      console.log(error);
     }
    ).add(()=>{
     if(this.authService.isLoggedIn){
@@ -41,13 +40,16 @@ export class AppComponent {
   });
 }
 
+ngOnInit(){
+  
+}
+
 loginSuccess() : void{
-  console.log('login sucessfull;');
   this.authService.loggedIn = true;
+  this.authService.sendLoginStatus(true);
 }
 
 loginFailure() : void{    
-  console.log('login unsucessfull;');
   this.authService.loggedIn = false;
 }
 }
