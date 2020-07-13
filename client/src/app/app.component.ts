@@ -52,4 +52,8 @@ loginSuccess() : void{
 loginFailure() : void{    
   this.authService.loggedIn = false;
 }
+
+isLoggedIn() : boolean {
+  return this.authService.loggedIn;
+}
 }
