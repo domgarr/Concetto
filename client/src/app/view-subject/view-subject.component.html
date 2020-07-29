@@ -10,12 +10,12 @@
     <div class ="row justify-content-center">
         <div *ngFor="let subject of subjects" class="card m-2 max-width-300px col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 " >
             <div class="card-body ">
-                <h5 class="card-title">{{subject.name}} <span class="badge badge-primary">{{subject.reviewCount}}</span> </h5>
-                <h6 class="card-subtitle mb-2 text-muted">Next Review Date: {{datePipe.transform(subject.nextReviewDate,'MMM dd, yyyy')}} </h6>
+                <h5 class="card-title d-inline">{{subject.name}}  </h5>
+                <span class="material-icons float-right d-inline" *ngIf="subject.count > 0" (click)="onEditSubject(subject.id)" style="cursor: pointer;"> edit </span>
+                <h6 class="card-subtitle mb-2 mt-1 text-muted">Next Review Date: {{datePipe.transform(subject.nextReviewDate,'MMM dd, yyyy')}} </h6>
                 <p class="card-text">Size: {{subject.count}}</p>
+                <button type="button" class="btn btn-link mr-2" [disabled]="subject.count == 0" (click)="onStudySubject(subject.id)" style="color: blue;">Study <span class="badge badge-primary">{{subject.reviewCount}}</span> </button>
                 <button type="button" class="btn btn-link mr-2" (click)="onAddConceptToSubject(subject.id)" style="color:green">Add</button>
-               
-                <button type="button" class="btn btn-link" [disabled]="subject.count == 0" (click)="onStudySubject(subject.id)" style="color: blue;">Study</button>
             </div>
         </div>
     </div>

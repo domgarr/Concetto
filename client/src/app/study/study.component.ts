@@ -193,6 +193,5 @@ perfectProgressAriaValueNow : string;
 
   onEditButtonPress(){
     this.routerService.routeToEditConcept(this.concept.id);
-
   }
 }

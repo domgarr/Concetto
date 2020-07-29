@@ -7,6 +7,7 @@ import com.example.concetto.exception.NotFoundException;
 import com.example.concetto.models.CountPerDate;
 import com.example.concetto.repositories.ConceptRepository;
 import com.example.concetto.repositories.CountPerDateRepository;
+import com.example.concetto.repositories.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,14 @@ public class ConceptServiceImpl implements ConceptService {
     private final ConceptMapper conceptMapper;
     private final ConceptRepository conceptRepository;
     @Autowired
+    private SubjectRepository subjectRepository;
+    @Autowired
     private CountPerDateRepository countPerDateRepository;
 
     public ConceptServiceImpl(ConceptMapper conceptMapper, ConceptRepository conceptRepository) {
         this.conceptMapper = conceptMapper;
         this.conceptRepository = conceptRepository;
+
     }
 
     @Override
@@ -180,5 +184,14 @@ public class ConceptServiceImpl implements ConceptService {
             }
         }
         return countPerDates;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Long subjectId = conceptRepository.findSubjectIdById(id);
+
+        //Check if id exists?
+        conceptRepository.deleteById(id);
+        subjectRepository.decrementCount(subjectId);
     }
 }

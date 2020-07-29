@@ -24,4 +24,5 @@ public interface ConceptService {
     List<ConceptDTO> findAllBySubjectIdNotDone(Long subjectId);
     Long findSubjectIdById(Long id);
     List<CountPerDate> findConceptReviewCountPerDate(Long userId);
+    void deleteById(Long id);
 }

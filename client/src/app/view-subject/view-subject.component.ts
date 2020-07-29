@@ -28,7 +28,6 @@ export class ViewSubjectComponent implements OnInit {
   ngOnInit() {
     this.subjectService.getAllSubjects().subscribe( subjects =>{
       this.subjects = subjects;
-      console.log(this.subjects);
     });
 
   }
@@ -43,5 +42,9 @@ export class ViewSubjectComponent implements OnInit {
 
   onStudySubject(subjectId : number){
     this.routerService.routeToStudy(subjectId);
+  }
+
+  onEditSubject(subjectId : number){
+    this.routerService.routeToEditSubject(subjectId);
   }
 }

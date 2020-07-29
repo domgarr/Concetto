@@ -4,6 +4,7 @@ import { Subject } from '../models/subject';
 import { ConceptService } from '../services/concept.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { SubjectService } from '../services/subject.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-concept',
@@ -41,7 +42,7 @@ export class AddConceptComponent implements OnInit {
   private readonly EDIT = "edit";
   private readonly FINISH = "finish";
 
-  constructor(private conceptService : ConceptService, private subjectService : SubjectService, private activatedRoute : ActivatedRoute, private cdr : ChangeDetectorRef, private router : Router) { 
+  constructor(private conceptService : ConceptService, private subjectService : SubjectService, private activatedRoute : ActivatedRoute, private cdr : ChangeDetectorRef, private router : Router, private location : Location) { 
     this.concept = new Concept();
     this.concept.subject = new Subject(); //Prevent error upon first render.
     
@@ -148,7 +149,7 @@ export class AddConceptComponent implements OnInit {
   onConceptUpdate(){
     this.conceptService.updateConcept(this.concept).subscribe( (updatedConcept : Concept) =>{
       if(!this.finishing){
-        this.router.navigate(['/u/study', updatedConcept.subject.id]);
+        this.location.back();
       }else{
         this.concept = this.nextConceptToFinish();
         

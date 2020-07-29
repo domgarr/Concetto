@@ -36,7 +36,7 @@ public class ConceptController {
     private final AuthUtility authUtility;
 
     private enum SortParam {
-        is_scheduled, saved
+        is_scheduled, saved, all
     }
 
 
@@ -77,6 +77,8 @@ public class ConceptController {
                 return new ResponseEntity<>(conceptService.findAllConceptsBySubjectIdScheduledForReview(id), HttpStatus.OK);
             case saved:
                 return new ResponseEntity<>(conceptService.findAllBySubjectIdNotDone(id), HttpStatus.OK);
+            case all:
+                return new ResponseEntity<>(conceptService.findAllConceptsBySubjectId(id), HttpStatus.OK);
             default:
                 throw new NotFoundException("Given param not found");
         }
@@ -139,6 +141,23 @@ public class ConceptController {
         return new ResponseEntity<>(savedConcept, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Void> deleteConcept(@PathVariable Long id, OAuth2Authentication authentication){
+        conceptOwnerCheck(id,  userService.getUserByEmail(authUtility.getEmail(authentication)));
+        conceptService.deleteById(id);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    //TODO: Look into preauthorize.
+    private void conceptOwnerCheck(Long conceptId, User user){
+        Long userIdFromConcept = conceptService.findUserIdByConceptId(conceptId);
+
+        if(user.getId() != userIdFromConcept){
+            throw new ForbiddenAccessError("The user does not have ownership of the given subject");
+        }
+    }
+
     private void subjectOwnerCheck(Long subjectId, User user) {
         Long userIdFromSubject = subjectService.findUserIdById(subjectId);
 
@@ -146,6 +165,7 @@ public class ConceptController {
             throw new ForbiddenAccessError("The user does not have ownership of the given subject");
         }
     }
+
 
     private void validateConcept(Concept concept) {
         Set<ConstraintViolation<Concept>> constraintViolations = Validation.buildDefaultValidatorFactory().getValidator().validate(concept);

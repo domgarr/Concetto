@@ -25,7 +25,7 @@ export class RouterService {
   }
 
   routeToEditConcept(conceptId){
-    this.router.navigate(['/u/add-concept', conceptId]);
+    this.router.navigate(['/u/edit', conceptId]);
   }
 
   routeToDashbaord(){
@@ -34,6 +34,10 @@ export class RouterService {
 
   routerToLogin(){
     this.router.navigate(['/']);
+  }
+
+  routeToEditSubject(subjectId){
+    this.router.navigate(['/u/edit/subject', subjectId]);
   }
   
 }

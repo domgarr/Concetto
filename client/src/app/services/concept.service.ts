@@ -6,7 +6,8 @@ import {Observable, of} from 'rxjs';
 
 enum SortParam {
   SAVED = "saved",
-  IS_SCHEDULED = "is_scheduled"
+  IS_SCHEDULED = "is_scheduled",
+  ALL = "all"
 }
 
 @Injectable({
@@ -35,6 +36,13 @@ export class ConceptService {
     let httpOptions = this.getHttpOptions();
     httpOptions.headers.set('observe', 'response');
     return this.http.patch<Concept>(this.BASE_CONCEPT_URL, concept, this.getHttpOptions());
+  }
+  
+  deleteConcept(id : number) : Observable<any>{
+    let httpOptions = this.getHttpOptions();
+    httpOptions.headers.set('observe', 'response');
+
+    return this.http.delete<any>(this.BASE_CONCEPT_URL + id, httpOptions)
   }
 
   getConceptById(id : number) : Observable<Concept> {

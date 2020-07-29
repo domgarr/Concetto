@@ -19,6 +19,10 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     int incrementCount(@Param("id") Long id);
 
     @Modifying
+    @Query(value = "update subject s set s.count = s.count - 1 where id = :id", nativeQuery = true)
+    int decrementCount(@Param("id") Long id);
+
+    @Modifying
     @Query(value = "update subject s set s.review_count = s.review_count + 1 where id = :id", nativeQuery = true)
     int incrementReviewCount(@Param("id") Long id);
 

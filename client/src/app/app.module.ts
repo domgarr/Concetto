@@ -15,6 +15,7 @@ import { AppRoutingModule }        from './app-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { UserModule } from './user/user.module';
 import { DatePipe } from '@angular/common';
+import { EditSubjectComponent } from './edit-subject/edit-subject.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { DatePipe } from '@angular/common';
     HeaderComponent,
     FooterComponent,
     LoginComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    EditSubjectComponent
   ],
   imports: [
     BrowserModule,

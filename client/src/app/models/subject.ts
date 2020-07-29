@@ -1,7 +1,8 @@
 export class Subject {
-    id: Number;
+    id: number;
     name: string;
-    reviewCount : Number;
+    reviewCount : number;
     selected : boolean;
     nextReviewDate : Date;
+    count : number;
 }
