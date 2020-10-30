@@ -30,11 +30,14 @@ jobs:
          paths:
            - ~/.m2
          key: concetto-{{ checksum "pom.xml" }}
-         
-       
-      - run: mvn clean package -Dspring.profiles.active=prod
-       
-      - run: mvn clean compile jib:build -Dimage=domgarr/concetto:$CIRCLE_BUILD_NUM -Dspring.profiles.active=prod
+
+      - run: mvn clean test -Dspring.profiles.active=test
+
+    #Package into Jar.
+      - run: mvn clean package -Dspring.profiles.active=prod -DskipTests
+
+    #Build a docker image using jib.
+      - run: mvn clean compile jib:build -Dimage=domgarr/concetto:$CIRCLE_BUILD_NUM -Dspring.profiles.active=prod -DskipTests
        
       - store_artifacts:
           path: target/classes
