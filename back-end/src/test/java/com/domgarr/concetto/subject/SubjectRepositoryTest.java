@@ -27,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 //TODO: Switching to using Postman for Data Driven API Tests.
 @Transactional
-@ActiveProfiles("test")
 public class SubjectRepositoryTest {
     public static final String ASD_GMAIL_COM = "asd@gmail.com";
     @Autowired

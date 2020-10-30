@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/concetto_dev
+    username: concetto_dev_user
+    password: password # This is a local database.
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+    show-sql: true
+    format-sql: true
+#    properties:
+#      javax:
+#        persistence:
+#          schema-generation:
+#            create-source: metadata
+#            scripts:
+#              action: create
+#              create-target: concetto_db_create.sql
+
+#logging:
+#  level:
+#    root: DEBUG
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: TRACE
+
+user-defined:
+  allowed-origin: http://localhost:4200

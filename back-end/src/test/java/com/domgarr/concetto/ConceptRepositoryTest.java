@@ -30,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Transactional
-@ActiveProfiles("test")
 public class ConceptRepositoryTest {
 
     ConceptService conceptService; //TODO: Use DI in the future?

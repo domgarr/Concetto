@@ -1,0 +1,13 @@
+#TODO: Create a Prod yaml and Dev yaml, The dev yaml can be shared on git.
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_CLIENT_SECRET} 
+
+
+
+

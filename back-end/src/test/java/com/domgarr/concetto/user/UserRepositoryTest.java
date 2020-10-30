@@ -14,7 +14,6 @@ import java.math.BigInteger;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles("test")
 @Transactional
 public class UserRepositoryTest {
     public static final String ASD_GMAIL_COM = "asd@gmail.com";
