@@ -35,10 +35,10 @@ jobs:
 
 
     #Package into Jar.
-      - run: mvn clean package -Dspring.profiles.active=prod -DskipTests -DGOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID -DGOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET -DDB_URL_PROD=$DB_URL_PROD -DDB_USER_PROD=$DB_USERNAME_PROD -DDB_PASSWORD_PROD=$DB_PASSWORD_PROD
+      - run: mvn clean package -Dspring.profiles.active=prod -DskipTests -DGOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID -DGOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET -DDB_URL_PROD=$DB_URL_PROD -DDB_USERNAME_PROD=$DB_USERNAME_PROD -DDB_PASSWORD_PROD=$DB_PASSWORD_PROD
 
     #Build a docker image using jib.
-      - run: mvn clean compile jib:build -Dimage=domgarr/concetto:$CIRCLE_BUILD_NUM -Dspring.profiles.active=prod -DskipTests -DGOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID -DGOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET -DDB_URL_PROD=$DB_URL_PROD -DDB_USERNAME_PROD=$DB_USER_PROD -DDB_PASSWORD_PROD=$DB_PASSWORD_PROD
+      - run: mvn clean compile jib:build -Dimage=domgarr/concetto:$CIRCLE_BUILD_NUM -Dspring.profiles.active=prod -DskipTests -DGOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID -DGOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET -DDB_URL_PROD=$DB_URL_PROD -DDB_USERNAME_PROD=$DB_USERNAME_PROD -DDB_PASSWORD_PROD=$DB_PASSWORD_PROD
        
       - store_artifacts:
           path: target/classes
