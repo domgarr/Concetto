@@ -29,7 +29,8 @@ public class ConcettoApplication extends WebSecurityConfigurerAdapter {
                 .logout(l -> l
                         .logoutSuccessUrl("/").permitAll()
                 )
-                .oauth2Login();
+                .oauth2Login()
+                .loginPage("/");
     }
 
 }

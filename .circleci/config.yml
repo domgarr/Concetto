@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  dmz: eddiewebb/dmz@0.0.7
+
 jobs:
   build:
     docker:
@@ -31,8 +34,18 @@ jobs:
            - ~/.m2
          key: concetto-{{ checksum "pom.xml" }}
 
-      - run: mvn clean test -Dspring.profiles.active=test -DGOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID -DGOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET -DDB_URL_TEST=$DB_URL_TEST -DDB_USERNAME_TEST=$DB_USERNAME_TEST -DDB_PASSWORD_TEST=$DB_PASSWORD_TEST
+      - dmz/open_tunnel:
+          local_port: "9001"
+          target_host: $TARGET_HOST
+          target_port: "3306"
+          bastion_host: $BASTION_HOST_URL
+          bastion_public_key: $BASTION_PUBLIC_KEY
 
+      - run: curl localhost:9001
+
+  test:
+    steps:
+      - run: mvn clean test -Dspring.profiles.active=test -DGOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID -DGOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET -DDB_URL_TEST=$DB_URL_TEST -DDB_USERNAME_TEST=$DB_USERNAME_TEST -DDB_PASSWORD_TEST=$DB_PASSWORD_TEST
 
     #Package into Jar.
       - run: mvn clean package -Dspring.profiles.active=prod -DskipTests -DGOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID -DGOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET -DDB_URL_PROD=$DB_URL_PROD -DDB_USERNAME_PROD=$DB_USERNAME_PROD -DDB_PASSWORD_PROD=$DB_PASSWORD_PROD
@@ -43,3 +56,10 @@ jobs:
       - store_artifacts:
           path: target/classes
           destination: concetto
+
+
+workflows:
+  version: 2.1
+  build_and_test:
+    jobs:
+      - build
